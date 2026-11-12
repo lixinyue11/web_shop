@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- 移动端菜单按钮 -->
+    <div class="d-md-none bg-white p-3 border-bottom">
+        <button class="btn btn-outline-pink w-100" type="button" data-bs-toggle="collapse" data-bs-target="#merchantMenu">
+            <i class="bi bi-list me-2"></i>菜单
+        </button>
+    </div>
+
+    <div class="row g-0">
+        <!-- 侧边栏 - 移动端可折叠 -->
+        <div class="col-md-2 merchant-sidebar py-3 py-md-4 collapse d-md-block" id="merchantMenu">
+            <div class="px-3 mb-3 d-none d-md-block">
+                <h5 style="color: var(--pink-dark);"><i class="bi bi-shop me-2"></i>商家后台</h5>
+                <small class="text-muted">{{ user.display_name }}</small>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/merchant/' %}active{% endif %}" href="{% url 'merchant_dashboard' %}">
+                        <i class="bi bi-speedometer2 me-2"></i>控制台
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'shop' in request.path and 'products' not in request.path %}active{% endif %}" href="{% url 'merchant_shop_settings' %}">
+                        <i class="bi bi-gear me-2"></i>店铺设置
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'categories' in request.path %}active{% endif %}" href="{% url 'merchant_categories' %}">
+                        <i class="bi bi-tags me-2"></i>类目管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'products' in request.path or 'product' in request.path %}active{% endif %}" href="{% url 'merchant_products' %}">
+                        <i class="bi bi-bag me-2"></i>商品管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'orders' in request.path %}active{% endif %}" href="{% url 'merchant_orders' %}">
+                        <i class="bi bi-receipt me-2"></i>订单管理
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'favorites' in request.path %}active{% endif %}" href="{% url 'merchant_favorites' %}">
+                        <i class="bi bi-heart me-2"></i>收藏统计
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'collections' in request.path %}active{% endif %}" href="{% url 'merchant_image_collections' %}">
+                        <i class="bi bi-images me-2"></i>图片收集
+                    </a>
+                </li>
+                <li class="nav-item mt-2 mt-md-3">
+                    <a class="nav-link" href="{% url 'shop_detail' user.id %}" target="_blank">
+                        <i class="bi bi-eye me-2"></i>预览店铺
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- 主内容区 -->
+        <div class="col-md-10 py-3 py-md-4 px-3 px-md-4" style="background: var(--pink-light); min-height: calc(100vh - 76px);">
+            {% block merchant_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

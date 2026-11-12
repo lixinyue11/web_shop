@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}商家注册{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card p-4">
+                <h3 class="text-center mb-4" style="color: var(--pink-dark);">
+                    <i class="bi bi-shop"></i> 商家入驻
+                </h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">商家账号</label>
+                        <input type="text" name="username" class="form-control" placeholder="请设置商家账号" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">密码</label>
+                        <input type="password" name="password" class="form-control" placeholder="请设置密码" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">确认密码</label>
+                        <input type="password" name="password2" class="form-control" placeholder="请再次输入密码" required>
+                    </div>
+                    <button type="submit" class="btn btn-pink w-100 py-2 mb-3">注册商家账号</button>
+                </form>
+                <div class="text-center">
+                    <p>已有账号？<a href="{% url 'login' %}" style="color: var(--pink-main);">去登录</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

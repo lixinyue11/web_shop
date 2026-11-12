@@ -1,0 +1,76 @@
+{% extends 'merchant/base.html' %}
+{% block title %}商家后台{% endblock %}
+
+{% block merchant_content %}
+<h4 class="mb-4" style="color: var(--pink-dark);">控制台</h4>
+
+{% if not user.shop_name %}
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    您还没有设置店铺名称，<a href="{% url 'merchant_shop_settings' %}" class="alert-link">点击这里设置</a>
+</div>
+{% endif %}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="number">{{ product_count }}</div>
+            <div class="label">商品总数</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="number">{{ order_count }}</div>
+            <div class="label">订单总数</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="number">{{ favorite_count }}</div>
+            <div class="label">被收藏数</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stats-card">
+            <div class="number">{{ collection_count }}</div>
+            <div class="label">收到图片</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5 style="color: var(--pink-dark);">快捷操作</h5>
+            <hr>
+            <div class="d-grid gap-2">
+                <a href="{% url 'merchant_shop_settings' %}" class="btn btn-outline-pink">
+                    <i class="bi bi-gear me-2"></i>店铺设置
+                </a>
+                <a href="{% url 'merchant_product_add' %}" class="btn btn-pink">
+                    <i class="bi bi-plus me-2"></i>添加商品
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5 style="color: var(--pink-dark);">店铺预览</h5>
+            <hr>
+            <div class="text-center">
+                {% if user.shop_logo %}
+                <img src="{{ user.shop_logo.url }}" class="shop-logo mb-2" style="width: 80px; height: 80px;">
+                {% else %}
+                <div class="shop-logo-placeholder mb-2" style="width: 80px; height: 80px; margin: 0 auto; font-size: 2rem;">
+                    <i class="bi bi-shop"></i>
+                </div>
+                {% endif %}
+                <h6>{{ user.display_name }}</h6>
+                <a href="{% url 'shop_detail' user.id %}" target="_blank" class="btn btn-sm btn-outline-pink">
+                    <i class="bi bi-eye me-1"></i>查看店铺
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

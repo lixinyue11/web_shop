@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" style="color: var(--pink-main);">首页</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop_detail' product.merchant.id %}" style="color: var(--pink-main);">{{ product.merchant.display_name }}</a></li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                {% if product.images.exists %}
+                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for img in product.images.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ img.image.url }}" class="d-block w-100" style="max-height: 400px; object-fit: contain;">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if product.images.count > 1 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="text-center py-5" style="background: var(--pink-light);">
+                    <i class="bi bi-image display-1" style="color: var(--pink-soft);"></i>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h3 class="mb-3">{{ product.name }}</h3>
+                <div class="mb-3">
+                    <a href="{% url 'shop_detail' product.merchant.id %}" class="text-decoration-none">
+                        <span class="category-badge"><i class="bi bi-shop me-1"></i>{{ product.merchant.display_name }}</span>
+                    </a>
+                    <span class="category-badge">{{ product.category.name }}</span>
+                    <span class="category-badge">{{ product.subcategory.name }}</span>
+                </div>
+                <div class="mb-4">
+                    <span class="product-price fs-2">¥{{ product.price }}</span>
+                    {% if product.original_price %}
+                    <span class="product-original-price fs-5 ms-2">¥{{ product.original_price }}</span>
+                    {% endif %}
+                </div>
+                <p class="text-muted mb-4">库存：{{ product.stock }} 件</p>
+
+                <div class="d-grid gap-2">
+                    {% if user.is_authenticated %}
+                    <button class="btn btn-outline-pink btn-lg" onclick="toggleFavorite({{ product.id }})" id="favoriteBtn">
+                        <i class="bi bi-heart{% if is_favorited %}-fill{% endif %}"></i>
+                        <span id="favText">{% if is_favorited %}已收藏{% else %}收藏{% endif %}</span>
+                    </button>
+                    <a href="{% url 'create_order' product.id %}" class="btn btn-pink btn-lg">
+                        <i class="bi bi-bag-plus me-2"></i>立即购买
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-pink btn-lg">登录后购买</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card p-4 mt-4">
+                <h5 style="color: var(--pink-dark);">商品详情</h5>
+                <hr>
+                <div>{{ product.description|linebreaks }}</div>
+            </div>
+        </div>
+    </div>
+
+    {% if related_products %}
+    <div class="mt-5">
+        <h5 style="color: var(--pink-dark);"><i class="bi bi-shop me-2"></i>店铺其他商品</h5>
+        <div class="row g-4 mt-2">
+            {% for p in related_products %}
+            <div class="col-6 col-md-3">
+                <div class="card product-card h-100">
+                    <a href="{% url 'product_detail' p.id %}">
+                        {% if p.main_image %}
+                        <img src="{{ p.main_image.image.url }}" class="card-img-top" alt="{{ p.name }}">
+                        {% else %}
+                        <div class="no-image"><i class="bi bi-image"></i></div>
+                        {% endif %}
+                    </a>
+                    <div class="card-body">
+                        <h6 class="card-title text-truncate">{{ p.name }}</h6>
+                        <span class="product-price">¥{{ p.price }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFavorite(productId) {
+    fetch('/favorite/' + productId + '/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const btn = document.getElementById('favoriteBtn');
+            const icon = btn.querySelector('i');
+            const text = document.getElementById('favText');
+            if (data.favorited) {
+                icon.className = 'bi bi-heart-fill';
+                text.textContent = '已收藏';
+            } else {
+                icon.className = 'bi bi-heart';
+                text.textContent = '收藏';
+            }
+        }
+        alert(data.message);
+    });
+}
+</script>
+{% endblock %}

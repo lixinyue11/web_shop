@@ -1,0 +1,80 @@
+# ============================================================
+# SheShop Docker 编排配置
+#
+# 启动：  docker compose up -d
+# 停止：  docker compose down
+# 日志：  docker compose logs -f web
+#
+# 使用远程/云数据库时，注释掉 db 服务，
+# 并在 .env 中把 DB_HOST 改为云数据库地址即可
+# ============================================================
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: sheshop_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-she_shop}
+      POSTGRES_USER: ${POSTGRES_USER:-sheshop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-sheshop123}
+      # 中文排序支持
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
+      TZ: Asia/Shanghai
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      # 只绑定本机回环地址，避免数据库暴露到公网
+      # web 容器通过内部网络访问，不依赖此映射；仅本机用客户端连库时才需要
+      # 确需外部访问时自行改为 "${POSTGRES_HOST_PORT:-5432}:5432" 并配好防火墙
+      - "127.0.0.1:${POSTGRES_HOST_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sheshop} -d ${POSTGRES_DB:-she_shop}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sheshop_net
+
+  web:
+    build: .
+    container_name: sheshop_web
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # 容器内部通过服务名访问数据库，覆盖 .env 中的 localhost
+      DB_ENGINE: postgresql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${POSTGRES_DB:-she_shop}
+      DB_USER: ${POSTGRES_USER:-sheshop}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-sheshop123}
+      # 容器内由 Django 提供媒体文件，生产环境建议前置 Nginx
+      SERVE_MEDIA: "True"
+    volumes:
+      # 媒体文件持久化，避免容器重建后用户上传的图片丢失
+      - media_data:/app/media
+      - static_data:/app/staticfiles
+      - ./logs:/app/logs
+    ports:
+      - "${WEB_HOST_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - sheshop_net
+
+
+volumes:
+  postgres_data:
+    driver: local
+  media_data:
+    driver: local
+  static_data:
+    driver: local
+
+networks:
+  sheshop_net:
+    driver: bridge

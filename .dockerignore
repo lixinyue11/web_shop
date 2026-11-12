@@ -1,0 +1,42 @@
+# 环境变量（通过 env_file 注入，不打包进镜像）
+.env
+.env.local
+.env.production
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*.pyc
+
+# 虚拟环境
+venv/
+.venv/
+env/
+
+# 本地数据库
+db.sqlite3
+db.sqlite3-journal
+*.sql
+*.dump
+
+# 媒体文件（通过 volume 挂载）
+media/
+staticfiles/
+logs/
+
+# 版本控制
+.git/
+.gitignore
+
+# IDE
+.idea/
+.vscode/
+
+# 临时文件
+data/
+picture/
+data_dump.json
+
+# 操作系统
+.DS_Store
+Thumbs.db

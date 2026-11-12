@@ -1,0 +1,38 @@
+{% extends 'merchant/base.html' %}
+{% block title %}图片收集{% endblock %}
+
+{% block merchant_content %}
+<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-images me-2"></i>图片收集</h4>
+
+<p class="text-muted mb-4">用户上传给您的图片，包含用户名称和上传时间</p>
+
+{% if collections %}
+<div class="row g-4">
+    {% for item in collections %}
+    <div class="col-md-4 col-lg-3">
+        <div class="card h-100">
+            <img src="{{ item.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="bi bi-person-circle me-2" style="color: var(--pink-main);"></i>
+                    <strong>{{ item.user.username }}</strong>
+                </div>
+                {% if item.note %}
+                <p class="small text-muted mb-2">{{ item.note }}</p>
+                {% endif %}
+                <small class="text-muted d-block mb-2">{{ item.created_at|date:"Y-m-d H:i" }}</small>
+                <a href="{% url 'merchant_delete_collection' item.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('确定删除这张图片？')">
+                    <i class="bi bi-trash"></i> 删除
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="bi bi-images display-1" style="color: var(--pink-soft);"></i>
+    <p class="mt-3 text-muted">还没有用户上传图片</p>
+</div>
+{% endif %}
+{% endblock %}

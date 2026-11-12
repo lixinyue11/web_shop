@@ -1,0 +1,54 @@
+{% extends 'merchant/base.html' %}
+{% block title %}店铺设置{% endblock %}
+
+{% block merchant_content %}
+<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-gear me-2"></i>店铺设置</h4>
+
+<div class="card p-4">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-3 text-center mb-4">
+                {% if user.shop_logo %}
+                <img src="{{ user.shop_logo.url }}" class="shop-logo mb-3" style="width: 150px; height: 150px;">
+                {% else %}
+                <div class="shop-logo-placeholder mb-3" style="width: 150px; height: 150px; margin: 0 auto;">
+                    <i class="bi bi-shop"></i>
+                </div>
+                {% endif %}
+                <div>
+                    <label class="btn btn-outline-pink btn-sm">
+                        <i class="bi bi-upload me-1"></i>上传Logo
+                        <input type="file" name="shop_logo" accept="image/*" hidden onchange="this.form.querySelector('.logo-hint').textContent = this.files[0]?.name || ''">
+                    </label>
+                    <div class="logo-hint text-muted small mt-1"></div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="mb-3">
+                    <label class="form-label">店铺名称</label>
+                    <input type="text" name="shop_name" class="form-control" value="{{ user.shop_name }}" placeholder="给您的店铺起个名字">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">店铺简介</label>
+                    <textarea name="shop_desc" class="form-control" rows="4" placeholder="介绍一下您的店铺">{{ user.shop_desc }}</textarea>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-pink px-4">保存设置</button>
+    </form>
+</div>
+
+<div class="card p-4 mt-4">
+    <h5 style="color: var(--pink-dark);">店铺信息</h5>
+    <hr>
+    <p><strong>商家账号：</strong>{{ user.username }}</p>
+    <p><strong>注册时间：</strong>{{ user.date_joined|date:"Y-m-d H:i" }}</p>
+    <p><strong>店铺链接：</strong>
+        <a href="{% url 'shop_detail' user.id %}" target="_blank" style="color: var(--pink-main);">
+            {{ request.scheme }}://{{ request.get_host }}{% url 'shop_detail' user.id %}
+        </a>
+    </p>
+</div>
+{% endblock %}

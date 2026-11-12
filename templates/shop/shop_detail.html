@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}{{ merchant.display_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- 店铺头部 -->
+    <div class="card p-4 mb-4">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                {% if merchant.shop_logo %}
+                <img src="{{ merchant.shop_logo.url }}" class="shop-logo" alt="{{ merchant.display_name }}">
+                {% else %}
+                <div class="shop-logo-placeholder">
+                    <i class="bi bi-shop"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col">
+                <h3 style="color: var(--pink-dark);">{{ merchant.display_name }}</h3>
+                {% if merchant.shop_desc %}
+                <p class="text-muted mb-0">{{ merchant.shop_desc }}</p>
+                {% endif %}
+            </div>
+            <div class="col-auto text-end">
+                <span class="badge badge-pink fs-6 me-2">{{ products.count }} 件商品</span>
+                {% if user.is_authenticated and not user.is_merchant %}
+                <a href="{% url 'upload_image' merchant.id %}" class="btn btn-outline-pink btn-sm">
+                    <i class="bi bi-upload me-1"></i>上传图片
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- 分类侧边栏 -->
+        <div class="col-md-3 mb-4">
+            <div class="sidebar">
+                <h5 class="mb-3" style="color: var(--pink-dark);">商品分类</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link {% if not current_category %}active{% endif %}" href="{% url 'shop_detail' merchant.id %}">
+                            <i class="bi bi-grid me-2"></i>全部商品
+                        </a>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_category == cat.id %}active{% endif %}" href="{% url 'shop_detail' merchant.id %}?category={{ cat.id }}">
+                            <i class="bi bi-tag me-2"></i>{{ cat.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- 商品列表 -->
+        <div class="col-md-9">
+            {% if featured_products %}
+            <h5 class="mb-3" style="color: var(--pink-dark);"><i class="bi bi-star-fill me-2"></i>店铺推荐</h5>
+            <div class="row g-3 mb-4">
+                {% for product in featured_products %}
+                <div class="col-6 col-lg-3">
+                    <div class="card product-card h-100">
+                        <a href="{% url 'product_detail' product.id %}">
+                            {% if product.main_image %}
+                            <img src="{{ product.main_image.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                            <div class="no-image"><i class="bi bi-image"></i></div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body p-2">
+                            <h6 class="card-title text-truncate small">{{ product.name }}</h6>
+                            <span class="product-price">¥{{ product.price }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <h5 class="mb-3" style="color: var(--pink-dark);"><i class="bi bi-bag me-2"></i>全部商品</h5>
+            {% if products %}
+            <div class="row g-4">
+                {% for product in products %}
+                <div class="col-6 col-lg-4">
+                    <div class="card product-card h-100">
+                        <a href="{% url 'product_detail' product.id %}">
+                            {% if product.main_image %}
+                            <img src="{{ product.main_image.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                            <div class="no-image"><i class="bi bi-image"></i></div>
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <h6 class="card-title text-truncate">{{ product.name }}</h6>
+                            <small class="text-muted">{{ product.subcategory.name }}</small>
+                            <div class="d-flex align-items-center justify-content-between mt-2">
+                                <span class="product-price">¥{{ product.price }}</span>
+                                {% if product.original_price %}
+                                <small class="product-original-price">¥{{ product.original_price }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-bag-x display-1" style="color: var(--pink-soft);"></i>
+                <p class="mt-3 text-muted">该店铺暂无商品</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

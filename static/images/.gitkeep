@@ -1,0 +1,2 @@
+# 占位文件，保证空目录能被 Git 跟踪
+# 离线模式(FRONTEND_ASSETS=local)需把 Bootstrap 文件放到此处

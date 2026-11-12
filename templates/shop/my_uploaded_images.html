@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}我上传的图片{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-images me-2"></i>我上传的图片</h4>
+
+    {% if images %}
+    <div class="row g-4">
+        {% for img in images %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+                <img src="{{ img.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <p class="mb-1">
+                        <a href="{% url 'shop_detail' img.merchant.id %}" class="text-decoration-none" style="color: var(--pink-main);">
+                            <i class="bi bi-shop"></i> {{ img.merchant.display_name }}
+                        </a>
+                    </p>
+                    {% if img.note %}
+                    <small class="text-muted">{{ img.note|truncatechars:30 }}</small>
+                    {% endif %}
+                    <div class="mt-2">
+                        <small class="text-muted">{{ img.created_at|date:"Y-m-d H:i" }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-images display-1" style="color: var(--pink-soft);"></i>
+        <p class="mt-3 text-muted">还没有上传过图片</p>
+        <a href="{% url 'home' %}" class="btn btn-pink">去逛逛店铺</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
