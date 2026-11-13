@@ -71,7 +71,7 @@
                         </a>
                         <div class="card-body p-2">
                             <h6 class="card-title text-truncate small">{{ product.name }}</h6>
-                            <span class="product-price">¥{{ product.price }}</span>
+                            <span class="product-price">¥{{ product.display_price }}{% if product.has_specs %} 起{% endif %}</span>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                             <h6 class="card-title text-truncate">{{ product.name }}</h6>
                             <small class="text-muted">{{ product.subcategory.name }}</small>
                             <div class="d-flex align-items-center justify-content-between mt-2">
-                                <span class="product-price">¥{{ product.price }}</span>
+                                <span class="product-price">¥{{ product.display_price }}{% if product.has_specs %} 起{% endif %}</span>
                                 {% if product.original_price %}
                                 <small class="product-original-price">¥{{ product.original_price }}</small>
                                 {% endif %}

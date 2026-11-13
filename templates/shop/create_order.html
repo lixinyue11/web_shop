@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load l10n %}
 {% block title %}下单{% endblock %}
 
 {% block content %}
@@ -12,29 +13,32 @@
                 <hr>
                 <form method="post">
                     {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">联系人</label>
-                            <input type="text" name="contact_name" class="form-control" placeholder="请输入收货人姓名" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">联系电话</label>
-                            <input type="tel" name="contact_phone" class="form-control" placeholder="请输入手机号" required>
-                        </div>
-                    </div>
+                    {% for error in form.non_field_errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
+                    {% if product.has_specs %}
                     <div class="mb-3">
-                        <label class="form-label">收货地址</label>
-                        <textarea name="address" class="form-control" rows="2" placeholder="请输入详细地址" required></textarea>
+                        <label for="orderSku" class="form-label">商品规格</label>
+                        <select id="orderSku" name="sku_id" class="form-select" required>
+                            <option value="">请选择规格</option>
+                            {% for sku in skus %}
+                            <option value="{{ sku.pk|unlocalize }}" data-price="{{ sku.price }}" data-stock="{{ sku.stock|unlocalize }}"
+                                    {% if sku.pk == selected_sku.pk %}selected{% endif %} {% if not sku.is_available %}disabled{% endif %}>
+                                {{ sku.spec_values }} · ¥{{ sku.price }}{% if not sku.is_available %}（售罄）{% endif %}
+                            </option>
+                            {% endfor %}
+                        </select>
                     </div>
+                    {% endif %}
+                    {% for field in form %}
                     <div class="mb-3">
-                        <label class="form-label">购买数量</label>
-                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="{{ product.stock }}" style="width: 120px;">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">备注</label>
-                        <textarea name="note" class="form-control" rows="2" placeholder="选填"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-pink btn-lg w-100">提交订单</button>
+                    {% endfor %}
+                    <button id="submitOrder" type="submit" class="btn btn-pink btn-lg w-100" {% if not product.total_stock %}disabled{% endif %}>
+                        {% if product.total_stock %}提交订单{% else %}已售罄{% endif %}
+                    </button>
+
                 </form>
             </div>
         </div>
@@ -46,10 +50,34 @@
                 <img src="{{ product.main_image.image.url }}" class="img-fluid rounded mb-3">
                 {% endif %}
                 <h6>{{ product.name }}</h6>
-                <p class="product-price fs-4">¥{{ product.price }}</p>
-                <small class="text-muted">库存：{{ product.stock }} 件</small>
+                <p class="product-price fs-4" id="orderPrice">¥{% if selected_sku %}{{ selected_sku.price }}{% else %}{{ product.display_price }}{% if product.has_specs %} 起{% endif %}{% endif %}</p>
+                <small class="text-muted" id="orderStock" aria-live="polite">{% if selected_sku %}库存：{{ selected_sku.stock }} 件{% elif product.has_specs and product.total_stock %}请选择规格查看库存{% else %}库存：{{ product.total_stock }} 件{% endif %}</small>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{% if product.has_specs %}
+<script>
+(() => {
+    const select = document.getElementById('orderSku');
+    const quantity = document.getElementById('{{ form.quantity.id_for_label }}');
+    const price = document.getElementById('orderPrice');
+    const stock = document.getElementById('orderStock');
+    const startingPrice = '¥{{ product.display_price }} 起';
+    const stockPrompt = '{% if product.total_stock %}请选择规格查看库存{% else %}库存：0 件{% endif %}';
+
+    function updateSummary() {
+        const option = select.selectedOptions[0];
+        price.textContent = select.value ? `¥${option.dataset.price}` : startingPrice;
+        stock.textContent = select.value ? `库存：${option.dataset.stock} 件` : stockPrompt;
+        quantity.max = select.value ? option.dataset.stock : 2147483647;
+    }
+    select.addEventListener('change', updateSummary);
+    updateSummary();
+})();
+</script>
+{% endif %}
 {% endblock %}

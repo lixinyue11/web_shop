@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # 生产环境静态文件服务
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -50,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+if not DEBUG:
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 ROOT_URLCONF = 'config.urls'
 
@@ -161,6 +162,13 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = DATA_UPLOAD_MAX_MEMORY_SIZE
 
 # 单次最多上传图片数
 MAX_UPLOAD_IMAGES = env_int('MAX_UPLOAD_IMAGES', 9)
+
+# 单个商品最多生成的规格组合数
+# 组合数 = 各规格维度取值数的乘积，设置上限避免维度过多时数据膨胀
+MAX_SKU_COMBINATIONS = env_int('MAX_SKU_COMBINATIONS', 200)
+
+# 商品最多可定义的规格维度数（如颜色、尺码、型号）
+MAX_SPEC_DIMENSIONS = env_int('MAX_SPEC_DIMENSIONS', 5)
 
 
 # ==================== 站点配置 ====================

@@ -13,4 +13,6 @@ def site_settings(request):
         'SITE_FOOTER_TEXT': settings.SITE_FOOTER_TEXT,
         'FRONTEND_ASSETS': settings.FRONTEND_ASSETS,
         'MAX_UPLOAD_IMAGES': settings.MAX_UPLOAD_IMAGES,
+        'MAX_SPEC_DIMENSIONS': settings.MAX_SPEC_DIMENSIONS,
+        'MAX_SKU_COMBINATIONS': settings.MAX_SKU_COMBINATIONS,
     }

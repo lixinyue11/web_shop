@@ -22,6 +22,7 @@ urlpatterns = [
     path('merchant/products/', views.merchant_products, name='merchant_products'),
     path('merchant/product/add/', views.merchant_product_add, name='merchant_product_add'),
     path('merchant/product/edit/<int:product_id>/', views.merchant_product_edit, name='merchant_product_edit'),
+    path('merchant/product/<int:product_id>/skus/', views.merchant_product_skus, name='merchant_product_skus'),
     path('merchant/product/delete/<int:product_id>/', views.merchant_product_delete, name='merchant_product_delete'),
     path('merchant/orders/', views.merchant_orders, name='merchant_orders'),
     path('merchant/favorites/', views.merchant_favorites, name='merchant_favorites'),

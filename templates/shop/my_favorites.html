@@ -25,7 +25,7 @@
                         </a>
                     </small>
                     <div class="mt-2">
-                        <span class="product-price">¥{{ fav.product.price }}</span>
+                        <span class="product-price">¥{{ fav.product.display_price }}{% if fav.product.has_specs %} 起{% endif %}</span>
                     </div>
                     <div class="mt-2">
                         <a href="{% url 'create_order' fav.product.id %}" class="btn btn-pink btn-sm w-100">购买</a>

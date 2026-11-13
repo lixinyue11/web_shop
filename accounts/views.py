@@ -2,12 +2,18 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from django.utils.http import url_has_allowed_host_and_scheme
 from .models import User
 
 
 def login_view(request):
     """登录"""
+    next_url = request.POST.get('next') if request.method == 'POST' else request.GET.get('next')
+    if not url_has_allowed_host_and_scheme(next_url, {request.get_host()}, require_https=request.is_secure()):
+        next_url = ''
     if request.user.is_authenticated:
+        if next_url:
+            return redirect(next_url)
         if request.user.is_merchant:
             return redirect('merchant_dashboard')
         return redirect('home')
@@ -18,19 +24,21 @@ def login_view(request):
 
         if not username or not password:
             messages.error(request, '请输入用户名和密码')
-            return render(request, 'accounts/login.html')
+            return render(request, 'accounts/login.html', {'next': next_url})
 
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
             messages.success(request, f'欢迎回来，{username}！')
+            if next_url:
+                return redirect(next_url)
             if user.is_merchant:
                 return redirect('merchant_dashboard')
             return redirect('home')
         else:
             messages.error(request, '用户名或密码错误')
 
-    return render(request, 'accounts/login.html')
+    return render(request, 'accounts/login.html', {'next': next_url})
 
 
 def logout_view(request):

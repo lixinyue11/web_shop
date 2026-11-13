@@ -50,12 +50,12 @@
                     <span class="category-badge">{{ product.subcategory.name }}</span>
                 </div>
                 <div class="mb-4">
-                    <span class="product-price fs-2">¥{{ product.price }}</span>
+                    <span class="product-price fs-2" id="productPrice">¥{{ product.display_price }}{% if specs %} 起{% endif %}</span>
                     {% if product.original_price %}
                     <span class="product-original-price fs-5 ms-2">¥{{ product.original_price }}</span>
                     {% endif %}
                 </div>
-                <p class="text-muted mb-4">库存：{{ product.stock }} 件</p>
+                <p class="text-muted mb-4" id="productStock" aria-live="polite">库存：{{ product.total_stock }} 件</p>
 
                 <div class="d-grid gap-2">
                     {% if user.is_authenticated %}
@@ -63,12 +63,27 @@
                         <i class="bi bi-heart{% if is_favorited %}-fill{% endif %}"></i>
                         <span id="favText">{% if is_favorited %}已收藏{% else %}收藏{% endif %}</span>
                     </button>
-                    <a href="{% url 'create_order' product.id %}" class="btn btn-pink btn-lg">
-                        <i class="bi bi-bag-plus me-2"></i>立即购买
-                    </a>
-                    {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-pink btn-lg">登录后购买</a>
                     {% endif %}
+                    <form method="get" action="{% url 'create_order' product.id %}" id="purchaseForm" class="d-grid gap-2">
+                        {% for spec in specs %}
+                        <div>
+                            <label for="spec-{{ spec.pk }}" class="form-label mb-1">{{ spec.name }}</label>
+                            <select id="spec-{{ spec.pk }}" class="form-select" data-spec required>
+                                <option value="">请选择{{ spec.name }}</option>
+                                {% for value in spec.value_list %}
+                                <option value="{{ value }}">{{ value }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% endfor %}
+                        {% if specs %}
+                        <input type="hidden" name="sku">
+                        <noscript><a href="{% url 'create_order' product.id %}">前往下单页选择规格</a></noscript>
+                        {% endif %}
+                        <button type="submit" class="btn btn-pink btn-lg" {% if specs or not product.total_stock %}disabled{% endif %}>
+                            <i class="bi bi-bag-plus me-2"></i>{% if not product.total_stock %}已售罄{% elif user.is_authenticated %}立即购买{% else %}登录后购买{% endif %}
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -96,7 +111,7 @@
                     </a>
                     <div class="card-body">
                         <h6 class="card-title text-truncate">{{ p.name }}</h6>
-                        <span class="product-price">¥{{ p.price }}</span>
+                        <span class="product-price">¥{{ p.display_price }}{% if p.has_specs %} 起{% endif %}</span>
                     </div>
                 </div>
             </div>
@@ -108,6 +123,33 @@
 {% endblock %}
 
 {% block extra_js %}
+{% if specs %}
+{{ sku_data|json_script:"product-skus" }}
+<script>
+(() => {
+    const form = document.getElementById('purchaseForm');
+    const specs = [...form.querySelectorAll('[data-spec]')];
+    const skuData = new Map(Object.entries(JSON.parse(document.getElementById('product-skus').textContent)));
+    const purchase = form.querySelector('button[type="submit"]');
+    const price = document.getElementById('productPrice');
+    const stock = document.getElementById('productStock');
+    const startingPrice = price.textContent;
+    const totalStock = stock.textContent;
+
+    form.addEventListener('change', () => {
+        const values = specs.map(select => select.value);
+        const complete = values.every(Boolean);
+        const sku = complete ? skuData.get(values.join(' / ')) : undefined;
+        form.elements.sku.value = sku?.id ?? '';
+        purchase.disabled = !sku?.stock;
+        price.textContent = sku ? `¥${sku.price}` : startingPrice;
+        stock.textContent = sku
+            ? (sku.stock ? `库存：${sku.stock} 件` : '所选规格已售罄')
+            : (complete ? '所选规格暂不可购买，请选择其他组合' : totalStock);
+    });
+})();
+</script>
+{% endif %}
 <script>
 function toggleFavorite(productId) {
     fetch('/favorite/' + productId + '/', {

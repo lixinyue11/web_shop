@@ -1,11 +1,18 @@
 """商店视图"""
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import OperationalError, transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from functools import wraps
-from .models import Category, SubCategory, Product, ProductImage, Favorite, Order, ImageCollection
+from .models import (
+    Category, SubCategory, Product, ProductImage, ProductSKU,
+    Favorite, Order, ImageCollection,
+)
+from .forms import OrderForm, ProductForm, SKUValuesForm
+from .services import build_spec_combinations, parse_spec_inputs, resolve_order_sku, sync_product_skus, validate_spec_inputs
 from accounts.models import User
 
 
@@ -42,7 +49,8 @@ def shop_detail(request, merchant_id):
     """商家店铺页面"""
     merchant = get_object_or_404(User, id=merchant_id, user_type='merchant')
     categories = Category.objects.filter(products__merchant=merchant).distinct()
-    products = Product.objects.filter(merchant=merchant, is_active=True)
+    products = (Product.objects.filter(merchant=merchant, is_active=True)
+                .prefetch_related('images', 'specs', 'skus'))
 
     category_id = request.GET.get('category')
     if category_id:
@@ -61,18 +69,23 @@ def shop_detail(request, merchant_id):
 
 def product_detail(request, product_id):
     """商品详情"""
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, id=product_id, is_active=True)
     is_favorited = False
     if request.user.is_authenticated:
         is_favorited = Favorite.objects.filter(user=request.user, product=product).exists()
 
-    # 同店铺其他商品推荐
-    related = Product.objects.filter(merchant=product.merchant, is_active=True).exclude(id=product_id)[:4]
+    related = (Product.objects.filter(merchant=product.merchant, is_active=True)
+               .exclude(id=product_id).prefetch_related('images', 'specs', 'skus')[:4])
 
     return render(request, 'shop/product_detail.html', {
         'product': product,
         'is_favorited': is_favorited,
         'related_products': related,
+        'specs': list(product.specs.all()),
+        'sku_data': {
+            sku.spec_values: {'id': str(sku.pk), 'price': str(sku.price), 'stock': sku.stock}
+            for sku in product.skus.all() if sku.is_active
+        },
     })
 
 
@@ -91,41 +104,65 @@ def toggle_favorite(request, product_id):
 @login_required
 def my_favorites(request):
     """我的收藏"""
-    favorites = Favorite.objects.filter(user=request.user).select_related('product', 'product__merchant')
+    favorites = Favorite.objects.filter(user=request.user).select_related('product', 'product__merchant').prefetch_related('product__specs', 'product__skus')
     return render(request, 'shop/my_favorites.html', {'favorites': favorites})
 
 
 @login_required
 def create_order(request, product_id):
-    """创建订单"""
-    product = get_object_or_404(Product, id=product_id)
+    """创建订单并扣减对应规格的库存"""
+    product = get_object_or_404(Product, id=product_id, is_active=True)
+    selected_sku_id = request.POST.get('sku_id', '') if request.method == 'POST' else request.GET.get('sku', '')
+    form = OrderForm(request.POST if request.method == 'POST' else None, initial={'quantity': 1})
 
-    if request.method == 'POST':
-        quantity = int(request.POST.get('quantity', 1))
-        contact_name = request.POST.get('contact_name', '').strip()
-        contact_phone = request.POST.get('contact_phone', '').strip()
-        address = request.POST.get('address', '').strip()
-        note = request.POST.get('note', '').strip()
+    if request.method == 'POST' and form.is_valid():
+        try:
+            with transaction.atomic():
+                product = get_object_or_404(Product.objects.select_for_update(), id=product_id, is_active=True)
+                sku, unit_price, error = resolve_order_sku(product, selected_sku_id)
+                if error:
+                    raise ValidationError(error)
 
-        if not contact_name or not contact_phone or not address:
-            messages.error(request, '请填写完整的收货信息')
+                quantity = form.cleaned_data['quantity']
+                inventory = sku or product
+                if quantity > inventory.stock:
+                    raise ValidationError(f'库存不足，当前仅剩 {inventory.stock} 件')
+
+                order = form.save(commit=False)
+                order.user = request.user
+                order.product = product
+                order.product_name = product.name
+                order.product_price = unit_price
+                order.sku = sku
+                if sku:
+                    order.spec_text = ProductSKU.SEPARATOR.join(
+                        f'{spec.name}：{value}' for spec, value in zip(product.specs.all(), sku.value_list)
+                    )
+                order.total_amount = unit_price * quantity
+                Order._meta.get_field('total_amount').clean(order.total_amount, order)
+                inventory.stock -= quantity
+                inventory.save(update_fields=['stock'])
+                order.save()
+        except ValidationError as exc:
+            form.add_error(None, exc)
+        except OperationalError as exc:
+            if 'locked' not in str(exc).lower():
+                raise
+            form.add_error(None, '库存正在更新，请重新提交订单')
         else:
-            order = Order.objects.create(
-                user=request.user,
-                product=product,
-                product_name=product.name,
-                product_price=product.price,
-                quantity=quantity,
-                total_amount=product.price * quantity,
-                contact_name=contact_name,
-                contact_phone=contact_phone,
-                address=address,
-                note=note
-            )
             messages.success(request, f'下单成功！订单号：{order.order_no}')
             return redirect('my_orders')
 
-    return render(request, 'shop/create_order.html', {'product': product})
+    skus = list(product.skus.filter(is_active=True))
+    selected_sku = next((sku for sku in skus if str(sku.pk) == selected_sku_id and sku.is_available), None)
+    if selected_sku or not product.has_specs:
+        form.fields['quantity'].widget.attrs['max'] = selected_sku.stock if selected_sku else product.stock
+    return render(request, 'shop/create_order.html', {
+        'product': product,
+        'form': form,
+        'skus': skus,
+        'selected_sku': selected_sku,
+    })
 
 
 @login_required
@@ -207,7 +244,9 @@ def merchant_categories(request):
 @merchant_required
 def merchant_products(request):
     """商品管理 - 只显示自己的商品"""
-    products = Product.objects.filter(merchant=request.user).select_related('category', 'subcategory').prefetch_related('images')
+    products = (Product.objects.filter(merchant=request.user)
+                .select_related('category', 'subcategory')
+                .prefetch_related('images', 'specs', 'skus'))
     return render(request, 'merchant/products.html', {
         'products': products,
     })
@@ -216,71 +255,135 @@ def merchant_products(request):
 @merchant_required
 def merchant_product_add(request):
     """添加商品"""
-    categories = Category.objects.prefetch_related('subcategories').all()
-
-    if request.method == 'POST':
-        category_id = request.POST.get('category')
-        subcategory_id = request.POST.get('subcategory')
-
-        category = get_object_or_404(Category, id=category_id)
-        subcategory = get_object_or_404(SubCategory, id=subcategory_id)
-
-        product = Product.objects.create(
-            merchant=request.user,  # 关联当前商家
-            name=request.POST.get('name', '').strip(),
-            category=category,
-            subcategory=subcategory,
-            price=request.POST.get('price', 0),
-            original_price=request.POST.get('original_price') or None,
-            stock=request.POST.get('stock', 0),
-            description=request.POST.get('description', ''),
-            is_active=request.POST.get('is_active') == 'on',
-            is_featured=request.POST.get('is_featured') == 'on',
-        )
-
-        images = limit_images(request.FILES.getlist('images'))
-        for i, img in enumerate(images):
-            ProductImage.objects.create(product=product, image=img, is_main=(i == 0))
-
-        messages.success(request, '商品添加成功')
-        return redirect('merchant_products')
-
-    return render(request, 'merchant/product_form.html', {
-        'categories': categories,
-        'is_edit': False,
-    })
+    return merchant_product_form(request, Product(merchant=request.user))
 
 
 @merchant_required
 def merchant_product_edit(request, product_id):
-    """编辑商品 - 只能编辑自己的商品"""
+    """编辑自己的商品"""
+    if request.method == 'POST':
+        with transaction.atomic():
+            product = get_object_or_404(Product.objects.select_for_update(), id=product_id, merchant=request.user)
+            return merchant_product_form(request, product)
+
     product = get_object_or_404(Product, id=product_id, merchant=request.user)
-    categories = Category.objects.prefetch_related('subcategories').all()
+    return merchant_product_form(request, product)
+
+
+def merchant_product_form(request, product):
+    is_edit = product.pk is not None
+    form = ProductForm(request.POST if request.method == 'POST' else None, instance=product)
+    existing_specs = list(product.specs.all()) if is_edit else []
+    specs = existing_specs
 
     if request.method == 'POST':
-        product.name = request.POST.get('name', '').strip()
-        product.price = request.POST.get('price', 0)
-        product.original_price = request.POST.get('original_price') or None
-        product.stock = request.POST.get('stock', 0)
-        product.description = request.POST.get('description', '')
-        product.is_active = request.POST.get('is_active') == 'on'
-        product.is_featured = request.POST.get('is_featured') == 'on'
-        product.save()
+        specs = parse_spec_inputs(request.POST)
+        form.is_valid()
+        try:
+            combinations = validate_spec_inputs(specs)
+        except ValidationError as exc:
+            form.add_error(None, exc)
 
-        images = limit_images(request.FILES.getlist('images'))
-        if images:
-            product.images.all().delete()
-            for i, img in enumerate(images):
-                ProductImage.objects.create(product=product, image=img, is_main=(i == 0))
+        if not form.errors:
+            with transaction.atomic():
+                product = form.save()
+                existing_names = [spec.name for spec in existing_specs]
+                names = [spec.name for spec in specs]
+                product.specs.exclude(name__in=names).delete()
+                for order, spec in enumerate(specs):
+                    product.specs.update_or_create(name=spec.name, defaults={'values': spec.values, 'sort_order': order})
 
-        messages.success(request, '商品更新成功')
-        return redirect('merchant_products')
+                # 维度发生变化时，原有组合中的取值可能已不再对应原来的规格。
+                created, removed = sync_product_skus(product, combinations, reset=names != existing_names)
+
+                images = limit_images(request.FILES.getlist('images'))
+                if images:
+                    product.images.all().delete()
+                    for i, img in enumerate(images):
+                        ProductImage.objects.create(product=product, image=img, is_main=(i == 0))
+
+            messages.success(request, '商品已更新' if is_edit else '商品添加成功')
+            if specs and (created or removed):
+                messages.info(request, f'新增 {created} 个规格组合，移除 {removed} 个。请设置组合的价格和库存。')
+                return redirect('merchant_product_skus', product_id=product.id)
+            return redirect('merchant_products')
 
     return render(request, 'merchant/product_form.html', {
-        'categories': categories,
+        'form': form,
         'product': product,
-        'is_edit': True,
+        'is_edit': is_edit,
+        'specs': specs,
     })
+
+
+@merchant_required
+def merchant_product_skus(request, product_id):
+    """设置各组合的价格、库存和可售状态"""
+    products = Product.objects.filter(merchant=request.user)
+    if request.method == 'POST':
+        with transaction.atomic():
+            product = get_object_or_404(products.select_for_update(), id=product_id)
+            try:
+                save_sku_settings(request, product)
+            except ValidationError as exc:
+                for error in exc.messages:
+                    messages.error(request, error)
+        return redirect('merchant_product_skus', product_id=product_id)
+
+    product = get_object_or_404(products, id=product_id)
+    return render(request, 'merchant/product_skus.html', {
+        'product': product,
+        'specs': list(product.specs.all()),
+        'skus': list(product.skus.all()),
+    })
+
+
+def save_sku_settings(request, product):
+    action = request.POST.get('action', 'save')
+    if action == 'regenerate':
+        combinations = build_spec_combinations(product.specs.all())
+        created, removed = sync_product_skus(product, combinations)
+        messages.success(request, f'已重新生成，新增 {created} 个、移除 {removed} 个')
+        return
+
+    if action == 'batch':
+        form = SKUValuesForm({
+            'price': request.POST.get('batch_price', ''),
+            'stock': request.POST.get('batch_stock', ''),
+        })
+        for field in form.fields.values():
+            field.required = False
+        if not form.is_valid():
+            raise ValidationError(['批量设置：' + error for errors in form.errors.values() for error in errors])
+        updates = {key: value for key, value in form.cleaned_data.items() if value is not None}
+        if updates:
+            product.skus.all().update(**updates)
+            messages.success(request, '批量设置完成')
+        return
+
+    if action != 'save':
+        raise ValidationError('未知的规格管理操作')
+
+    updates = []
+    for sku in product.skus.all():
+        price = request.POST.get(f'price_{sku.pk}')
+        stock = request.POST.get(f'stock_{sku.pk}')
+        if price is None or stock is None:
+            raise ValidationError('规格组合已更新，请重新填写')
+        current_stock = sku.stock
+        form = SKUValuesForm({'price': price, 'stock': stock}, instance=sku)
+        if not form.is_valid():
+            raise ValidationError([f'「{sku.spec_values}」：{error}' for errors in form.errors.values() for error in errors])
+        sku = form.save(commit=False)
+        # 仅修改价格或可售状态时，保留页面加载后发生的库存扣减。
+        if stock == request.POST.get(f'original_stock_{sku.pk}'):
+            sku.stock = current_stock
+        sku.is_active = request.POST.get(f'active_{sku.pk}') == 'on'
+        updates.append(sku)
+
+    if updates:
+        ProductSKU.objects.bulk_update(updates, ['price', 'stock', 'is_active'])
+    messages.success(request, '规格设置已保存')
 
 
 @merchant_required
@@ -301,7 +404,7 @@ def merchant_orders(request):
         messages.success(request, '订单状态已更新')
         return redirect('merchant_orders')
 
-    orders = Order.objects.filter(product__merchant=request.user).select_related('user', 'product')
+    orders = Order.objects.filter(product__merchant=request.user).select_related('user', 'product', 'sku')
     return render(request, 'merchant/orders.html', {'orders': orders})
 
 
