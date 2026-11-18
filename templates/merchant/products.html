@@ -1,11 +1,12 @@
 {% extends 'merchant/base.html' %}
-{% block title %}商品管理{% endblock %}
+{% load i18n %}
+{% block title %}{% translate '商品管理' %}{% endblock %}
 
 {% block merchant_content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 style="color: var(--pink-dark);"><i class="bi bi-bag me-2"></i>商品管理</h4>
+    <h4 style="color: var(--pink-dark);"><i class="bi bi-bag me-2"></i>{% translate '商品管理' %}</h4>
     <a href="{% url 'merchant_product_add' %}" class="btn btn-pink">
-        <i class="bi bi-plus me-1"></i>添加商品
+        <i class="bi bi-plus me-1"></i>{% translate '添加商品' %}
     </a>
 </div>
 
@@ -15,13 +16,13 @@
         <table class="table table-hover mb-0">
             <thead style="background: var(--pink-light);">
                 <tr>
-                    <th>图片</th>
-                    <th>商品名称</th>
-                    <th>类目</th>
-                    <th>价格</th>
-                    <th>库存</th>
-                    <th>状态</th>
-                    <th>操作</th>
+                    <th>{% translate '图片' %}</th>
+                    <th>{% translate '商品名称' %}</th>
+                    <th>{% translate '类目' %}</th>
+                    <th>{% translate '价格' %}</th>
+                    <th>{% translate '库存' %}</th>
+                    <th>{% translate '状态' %}</th>
+                    <th>{% translate '操作' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,36 +43,36 @@
                         <br>
                         <small class="text-muted">
                             {% for spec in product.specs.all %}{{ spec.name }}{% if not forloop.last %} · {% endif %}{% endfor %}
-                            （{{ product.skus.count }} 个组合）
+                            （{{ product.skus.count }} {% translate '个组合）' %}
                         </small>
                         {% endif %}
                     </td>
                     <td><small>{{ product.category.name }} / {{ product.subcategory.name }}</small></td>
                     <td class="product-price">
                         ¥{{ product.display_price }}
-                        {% if product.has_specs %}<small class="text-muted d-block" style="font-size:.75rem;">起</small>{% endif %}
+                        {% if product.has_specs %}<small class="text-muted d-block" style="font-size:.75rem;">{% translate '起' %}</small>{% endif %}
                     </td>
                     <td>{{ product.total_stock }}</td>
                     <td>
                         {% if product.is_active %}
-                        <span class="badge bg-success">上架</span>
+                        <span class="badge bg-success">{% translate '上架' %}</span>
                         {% else %}
-                        <span class="badge bg-secondary">下架</span>
+                        <span class="badge bg-secondary">{% translate '下架' %}</span>
                         {% endif %}
                         {% if product.is_featured %}
-                        <span class="badge badge-pink">推荐</span>
+                        <span class="badge badge-pink">{% translate '推荐' %}</span>
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'merchant_product_edit' product.id %}" class="btn btn-sm btn-outline-pink" title="编辑">
+                        <a href="{% url 'merchant_product_edit' product.id %}" class="btn btn-sm btn-outline-pink" title="{% translate '编辑' %}">
                             <i class="bi bi-pencil"></i>
                         </a>
                         {% if product.has_specs %}
-                        <a href="{% url 'merchant_product_skus' product.id %}" class="btn btn-sm btn-outline-pink" title="规格管理">
+                        <a href="{% url 'merchant_product_skus' product.id %}" class="btn btn-sm btn-outline-pink" title="{% translate '规格管理' %}">
                             <i class="bi bi-sliders"></i>
                         </a>
                         {% endif %}
-                        <a href="{% url 'merchant_product_delete' product.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('确定删除此商品？')">
+                        <a href="{% url 'merchant_product_delete' product.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('{% translate '确定删除此商品？' %}')">
                             <i class="bi bi-trash"></i>
                         </a>
                     </td>
@@ -84,7 +85,7 @@
 {% else %}
 <div class="text-center py-5">
     <i class="bi bi-bag-plus display-1" style="color: var(--pink-soft);"></i>
-    <p class="mt-3 text-muted">还没有商品，点击上方按钮添加</p>
+    <p class="mt-3 text-muted">{% translate '还没有商品，点击上方按钮添加' %}</p>
 </div>
 {% endif %}
 {% endblock %}

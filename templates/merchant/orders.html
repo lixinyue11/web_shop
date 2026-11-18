@@ -1,8 +1,9 @@
 {% extends 'merchant/base.html' %}
-{% block title %}订单管理{% endblock %}
+{% load i18n %}
+{% block title %}{% translate '订单管理' %}{% endblock %}
 
 {% block merchant_content %}
-<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-receipt me-2"></i>订单管理</h4>
+<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-receipt me-2"></i>{% translate '订单管理' %}</h4>
 
 {% if orders %}
 <div class="card">
@@ -10,15 +11,15 @@
         <table class="table table-hover mb-0">
             <thead style="background: var(--pink-light);">
                 <tr>
-                    <th>订单号</th>
-                    <th>用户</th>
-                    <th>商品</th>
-                    <th>数量</th>
-                    <th>总价</th>
-                    <th>收货信息</th>
-                    <th>状态</th>
-                    <th>下单时间</th>
-                    <th>操作</th>
+                    <th>{% translate '订单号' %}</th>
+                    <th>{% translate '用户' %}</th>
+                    <th>{% translate '商品' %}</th>
+                    <th>{% translate '数量' %}</th>
+                    <th>{% translate '总价' %}</th>
+                    <th>{% translate '收货信息' %}</th>
+                    <th>{% translate '状态' %}</th>
+                    <th>{% translate '下单时间' %}</th>
+                    <th>{% translate '操作' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,11 +51,11 @@
                             {% csrf_token %}
                             <input type="hidden" name="order_id" value="{{ order.id }}">
                             <select name="status" class="form-select form-select-sm" style="width: auto; display: inline-block;" onchange="this.form.submit()">
-                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>待处理</option>
-                                <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>已确认</option>
-                                <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>已发货</option>
-                                <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>已完成</option>
-                                <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>已取消</option>
+                                <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>{% translate '待处理' %}</option>
+                                <option value="confirmed" {% if order.status == 'confirmed' %}selected{% endif %}>{% translate '已确认' %}</option>
+                                <option value="shipped" {% if order.status == 'shipped' %}selected{% endif %}>{% translate '已发货' %}</option>
+                                <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>{% translate '已完成' %}</option>
+                                <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>{% translate '已取消' %}</option>
                             </select>
                         </form>
                     </td>
@@ -67,7 +68,7 @@
 {% else %}
 <div class="text-center py-5">
     <i class="bi bi-receipt display-1" style="color: var(--pink-soft);"></i>
-    <p class="mt-3 text-muted">暂无订单</p>
+    <p class="mt-3 text-muted">{% translate '暂无订单' %}</p>
 </div>
 {% endif %}
 {% endblock %}

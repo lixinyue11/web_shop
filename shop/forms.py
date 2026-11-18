@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.core.validators import MinValueValidator
 
@@ -25,8 +26,8 @@ class ProductForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for name in ('price', 'original_price'):
             self.fields[name].validators.append(MinValueValidator(0))
-        self.fields['category'].empty_label = '请选择一级类目'
-        self.fields['subcategory'].empty_label = '请选择二级类目'
+        self.fields['category'].empty_label = _('请选择一级类目')
+        self.fields['subcategory'].empty_label = _('请选择二级类目')
         if self.instance.pk:
             self.fields['category'].disabled = True
             self.fields['subcategory'].disabled = True
@@ -41,7 +42,7 @@ class ProductForm(forms.ModelForm):
         category = cleaned.get('category')
         subcategory = cleaned.get('subcategory')
         if category and subcategory and subcategory.category_id != category.pk:
-            self.add_error('subcategory', '请选择所属一级类目下的二级类目')
+            self.add_error('subcategory', _('请选择所属一级类目下的二级类目'))
         return cleaned
 
 
@@ -56,7 +57,7 @@ class SKUValuesForm(forms.ModelForm):
 
 
 class OrderForm(forms.ModelForm):
-    quantity = forms.IntegerField(label='购买数量', min_value=1, max_value=2147483647, widget=forms.NumberInput(
+    quantity = forms.IntegerField(label=_('购买数量'), min_value=1, max_value=2147483647, widget=forms.NumberInput(
         attrs={'class': 'form-control', 'style': 'width: 120px;'}
     ))
 

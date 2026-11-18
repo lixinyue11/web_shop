@@ -1,4 +1,5 @@
 """账户表单"""
+from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.contrib.auth import get_user_model
 
@@ -8,18 +9,18 @@ User = get_user_model()
 class UserLoginForm(forms.Form):
     """用户登录表单"""
     username = forms.CharField(
-        label='用户名',
+        label=_('用户名'),
         max_length=150,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': '请输入用户名'
+            'placeholder': _('请输入用户名')
         })
     )
     password = forms.CharField(
-        label='密码',
+        label=_('密码'),
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
-            'placeholder': '请输入密码'
+            'placeholder': _('请输入密码')
         })
     )
 
@@ -27,17 +28,17 @@ class UserLoginForm(forms.Form):
 class CustomerRegisterForm(forms.ModelForm):
     """顾客注册表单"""
     password = forms.CharField(
-        label='密码',
+        label=_('密码'),
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
-            'placeholder': '请设置密码'
+            'placeholder': _('请设置密码')
         })
     )
     password_confirm = forms.CharField(
-        label='确认密码',
+        label=_('确认密码'),
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
-            'placeholder': '请再次输入密码'
+            'placeholder': _('请再次输入密码')
         })
     )
 
@@ -47,18 +48,18 @@ class CustomerRegisterForm(forms.ModelForm):
         widgets = {
             'username': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '请输入用户名'
+                'placeholder': _('请输入用户名')
             }),
             'phone': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '请输入手机号（选填）'
+                'placeholder': _('请输入手机号（选填）')
             }),
         }
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if User.objects.filter(username=username).exists():
-            raise forms.ValidationError('该用户名已被注册，请换一个')
+            raise forms.ValidationError(_('该用户名已被注册，请换一个'))
         return username
 
     def clean(self):
@@ -66,7 +67,7 @@ class CustomerRegisterForm(forms.ModelForm):
         password = cleaned_data.get('password')
         password_confirm = cleaned_data.get('password_confirm')
         if password and password_confirm and password != password_confirm:
-            raise forms.ValidationError('两次输入的密码不一致')
+            raise forms.ValidationError(_('两次输入的密码不一致'))
         return cleaned_data
 
     def save(self, commit=True):
@@ -81,17 +82,17 @@ class CustomerRegisterForm(forms.ModelForm):
 class MerchantRegisterForm(forms.ModelForm):
     """商家注册表单"""
     password = forms.CharField(
-        label='密码',
+        label=_('密码'),
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
-            'placeholder': '请设置密码'
+            'placeholder': _('请设置密码')
         })
     )
     password_confirm = forms.CharField(
-        label='确认密码',
+        label=_('确认密码'),
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
-            'placeholder': '请再次输入密码'
+            'placeholder': _('请再次输入密码')
         })
     )
 
@@ -101,22 +102,22 @@ class MerchantRegisterForm(forms.ModelForm):
         widgets = {
             'username': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '请输入商家账号'
+                'placeholder': _('请输入商家账号')
             }),
             'email': forms.EmailInput(attrs={
                 'class': 'form-control',
-                'placeholder': '请输入邮箱'
+                'placeholder': _('请输入邮箱')
             }),
             'phone': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '请输入联系电话'
+                'placeholder': _('请输入联系电话')
             }),
         }
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if User.objects.filter(username=username).exists():
-            raise forms.ValidationError('该商家账号已存在')
+            raise forms.ValidationError(_('该商家账号已存在'))
         return username
 
     def clean(self):
@@ -124,7 +125,7 @@ class MerchantRegisterForm(forms.ModelForm):
         password = cleaned_data.get('password')
         password_confirm = cleaned_data.get('password_confirm')
         if password and password_confirm and password != password_confirm:
-            raise forms.ValidationError('两次输入的密码不一致')
+            raise forms.ValidationError(_('两次输入的密码不一致'))
         return cleaned_data
 
     def save(self, commit=True):

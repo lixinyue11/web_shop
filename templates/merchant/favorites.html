@@ -1,8 +1,9 @@
 {% extends 'merchant/base.html' %}
-{% block title %}收藏统计{% endblock %}
+{% load i18n %}
+{% block title %}{% translate '收藏统计' %}{% endblock %}
 
 {% block merchant_content %}
-<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-heart me-2"></i>收藏统计</h4>
+<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-heart me-2"></i>{% translate '收藏统计' %}</h4>
 
 {% if favorites %}
 <div class="card">
@@ -10,9 +11,9 @@
         <table class="table table-hover mb-0">
             <thead style="background: var(--pink-light);">
                 <tr>
-                    <th>用户</th>
-                    <th>商品</th>
-                    <th>收藏时间</th>
+                    <th>{% translate '用户' %}</th>
+                    <th>{% translate '商品' %}</th>
+                    <th>{% translate '收藏时间' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +31,7 @@
 {% else %}
 <div class="text-center py-5">
     <i class="bi bi-heart display-1" style="color: var(--pink-soft);"></i>
-    <p class="mt-3 text-muted">暂无收藏记录</p>
+    <p class="mt-3 text-muted">{% translate '暂无收藏记录' %}</p>
 </div>
 {% endif %}
 {% endblock %}

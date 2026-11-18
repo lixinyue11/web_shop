@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title %}{{ merchant.display_name }}{% endblock %}
 
 {% block content %}
@@ -22,10 +23,10 @@
                 {% endif %}
             </div>
             <div class="col-auto text-end">
-                <span class="badge badge-pink fs-6 me-2">{{ products.count }} 件商品</span>
+                <span class="badge badge-pink fs-6 me-2">{{ products.count }} {% translate '件商品' %}</span>
                 {% if user.is_authenticated and not user.is_merchant %}
                 <a href="{% url 'upload_image' merchant.id %}" class="btn btn-outline-pink btn-sm">
-                    <i class="bi bi-upload me-1"></i>上传图片
+                    <i class="bi bi-upload me-1"></i>{% translate '上传图片' %}
                 </a>
                 {% endif %}
             </div>
@@ -36,11 +37,11 @@
         <!-- 分类侧边栏 -->
         <div class="col-md-3 mb-4">
             <div class="sidebar">
-                <h5 class="mb-3" style="color: var(--pink-dark);">商品分类</h5>
+                <h5 class="mb-3" style="color: var(--pink-dark);">{% translate '商品分类' %}</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link {% if not current_category %}active{% endif %}" href="{% url 'shop_detail' merchant.id %}">
-                            <i class="bi bi-grid me-2"></i>全部商品
+                            <i class="bi bi-grid me-2"></i>{% translate '全部商品' %}
                         </a>
                     </li>
                     {% for cat in categories %}
@@ -57,7 +58,7 @@
         <!-- 商品列表 -->
         <div class="col-md-9">
             {% if featured_products %}
-            <h5 class="mb-3" style="color: var(--pink-dark);"><i class="bi bi-star-fill me-2"></i>店铺推荐</h5>
+            <h5 class="mb-3" style="color: var(--pink-dark);"><i class="bi bi-star-fill me-2"></i>{% translate '店铺推荐' %}</h5>
             <div class="row g-3 mb-4">
                 {% for product in featured_products %}
                 <div class="col-6 col-lg-3">
@@ -71,7 +72,7 @@
                         </a>
                         <div class="card-body p-2">
                             <h6 class="card-title text-truncate small">{{ product.name }}</h6>
-                            <span class="product-price">¥{{ product.display_price }}{% if product.has_specs %} 起{% endif %}</span>
+                            <span class="product-price">¥{{ product.display_price }}{% if product.has_specs %} {% translate '起' %}{% endif %}</span>
                         </div>
                     </div>
                 </div>
@@ -79,7 +80,7 @@
             </div>
             {% endif %}
 
-            <h5 class="mb-3" style="color: var(--pink-dark);"><i class="bi bi-bag me-2"></i>全部商品</h5>
+            <h5 class="mb-3" style="color: var(--pink-dark);"><i class="bi bi-bag me-2"></i>{% translate '全部商品' %}</h5>
             {% if products %}
             <div class="row g-4">
                 {% for product in products %}
@@ -96,7 +97,7 @@
                             <h6 class="card-title text-truncate">{{ product.name }}</h6>
                             <small class="text-muted">{{ product.subcategory.name }}</small>
                             <div class="d-flex align-items-center justify-content-between mt-2">
-                                <span class="product-price">¥{{ product.display_price }}{% if product.has_specs %} 起{% endif %}</span>
+                                <span class="product-price">¥{{ product.display_price }}{% if product.has_specs %} {% translate '起' %}{% endif %}</span>
                                 {% if product.original_price %}
                                 <small class="product-original-price">¥{{ product.original_price }}</small>
                                 {% endif %}
@@ -109,7 +110,7 @@
             {% else %}
             <div class="text-center py-5">
                 <i class="bi bi-bag-x display-1" style="color: var(--pink-soft);"></i>
-                <p class="mt-3 text-muted">该店铺暂无商品</p>
+                <p class="mt-3 text-muted">{% translate '该店铺暂无商品' %}</p>
             </div>
             {% endif %}
         </div>

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'config.middleware.LanguagePreferenceMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -126,7 +127,10 @@ SESSION_COOKIE_AGE = env_int('SESSION_COOKIE_AGE', 60 * 60 * 24 * 14)
 
 # ==================== 国际化 ====================
 
-LANGUAGE_CODE = env_str('LANGUAGE_CODE', 'zh-hans')
+LANGUAGE_CODE = 'es'
+LANGUAGES = [('es', 'Español'), ('zh-hans', '中文')]
+LOCALE_PATHS = [BASE_DIR / 'locale']
+LANGUAGE_COOKIE_NAME = 'sheshop_language'
 TIME_ZONE = env_str('TIME_ZONE', 'Asia/Shanghai')
 USE_I18N = True
 USE_TZ = True

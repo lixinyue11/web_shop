@@ -6,7 +6,6 @@ Pillow>=10.0.0
 
 # ============ PostgreSQL 驱动 ============
 # psycopg2-binary 为预编译版本，免去本地编译依赖
-# 生产环境如需更好性能可改用 psycopg[binary,pool]
 psycopg2-binary>=2.9.9
 
 # ============ 静态文件服务 ============

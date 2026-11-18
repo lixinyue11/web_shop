@@ -1,28 +1,29 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load l10n %}
-{% block title %}下单{% endblock %}
+{% block title %}{% translate '下单' %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-bag-check me-2"></i>确认订单</h4>
+    <h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-bag-check me-2"></i>{% translate '确认订单' %}</h4>
 
     <div class="row">
         <div class="col-md-8">
             <div class="card p-4 mb-4">
-                <h5>收货信息</h5>
+                <h5>{% translate '收货信息' %}</h5>
                 <hr>
                 <form method="post">
                     {% csrf_token %}
                     {% for error in form.non_field_errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
                     {% if product.has_specs %}
                     <div class="mb-3">
-                        <label for="orderSku" class="form-label">商品规格</label>
+                        <label for="orderSku" class="form-label">{% translate '商品规格' %}</label>
                         <select id="orderSku" name="sku_id" class="form-select" required>
-                            <option value="">请选择规格</option>
+                            <option value="">{% translate '请选择规格' %}</option>
                             {% for sku in skus %}
                             <option value="{{ sku.pk|unlocalize }}" data-price="{{ sku.price }}" data-stock="{{ sku.stock|unlocalize }}"
                                     {% if sku.pk == selected_sku.pk %}selected{% endif %} {% if not sku.is_available %}disabled{% endif %}>
-                                {{ sku.spec_values }} · ¥{{ sku.price }}{% if not sku.is_available %}（售罄）{% endif %}
+                                {{ sku.spec_values }} · ¥{{ sku.price }}{% if not sku.is_available %}（{% translate '售罄）' %}{% endif %}
                             </option>
                             {% endfor %}
                         </select>
@@ -36,7 +37,7 @@
                     </div>
                     {% endfor %}
                     <button id="submitOrder" type="submit" class="btn btn-pink btn-lg w-100" {% if not product.total_stock %}disabled{% endif %}>
-                        {% if product.total_stock %}提交订单{% else %}已售罄{% endif %}
+                        {% if product.total_stock %}{% translate '提交订单' %}{% else %}{% translate '已售罄' %}{% endif %}
                     </button>
 
                 </form>
@@ -44,14 +45,14 @@
         </div>
         <div class="col-md-4">
             <div class="card p-4">
-                <h5>商品信息</h5>
+                <h5>{% translate '商品信息' %}</h5>
                 <hr>
                 {% if product.main_image %}
                 <img src="{{ product.main_image.image.url }}" class="img-fluid rounded mb-3">
                 {% endif %}
                 <h6>{{ product.name }}</h6>
-                <p class="product-price fs-4" id="orderPrice">¥{% if selected_sku %}{{ selected_sku.price }}{% else %}{{ product.display_price }}{% if product.has_specs %} 起{% endif %}{% endif %}</p>
-                <small class="text-muted" id="orderStock" aria-live="polite">{% if selected_sku %}库存：{{ selected_sku.stock }} 件{% elif product.has_specs and product.total_stock %}请选择规格查看库存{% else %}库存：{{ product.total_stock }} 件{% endif %}</small>
+                <p class="product-price fs-4" id="orderPrice">¥{% if selected_sku %}{{ selected_sku.price }}{% else %}{{ product.display_price }}{% if product.has_specs %} {% translate '起' %}{% endif %}{% endif %}</p>
+                <small class="text-muted" id="orderStock" aria-live="polite">{% if selected_sku %}{% translate '库存：' %}{{ selected_sku.stock }} {% translate '件' %}{% elif product.has_specs and product.total_stock %}{% translate '请选择规格查看库存' %}{% else %}{% translate '库存：' %}{{ product.total_stock }} {% translate '件' %}{% endif %}</small>
             </div>
         </div>
     </div>
@@ -66,13 +67,13 @@
     const quantity = document.getElementById('{{ form.quantity.id_for_label }}');
     const price = document.getElementById('orderPrice');
     const stock = document.getElementById('orderStock');
-    const startingPrice = '¥{{ product.display_price }} 起';
-    const stockPrompt = '{% if product.total_stock %}请选择规格查看库存{% else %}库存：0 件{% endif %}';
+    const startingPrice = '¥{{ product.display_price }} {{ _('起')|escapejs }}';
+    const stockPrompt = '{% if product.total_stock %}{{ _('请选择规格查看库存')|escapejs }}{% else %}{{ _('库存：0 件')|escapejs }}{% endif %}';
 
     function updateSummary() {
         const option = select.selectedOptions[0];
         price.textContent = select.value ? `¥${option.dataset.price}` : startingPrice;
-        stock.textContent = select.value ? `库存：${option.dataset.stock} 件` : stockPrompt;
+        stock.textContent = select.value ? `{{ _('库存：')|escapejs }}${option.dataset.stock} {{ _('件')|escapejs }}` : stockPrompt;
         quantity.max = select.value ? option.dataset.stock : 2147483647;
     }
     select.addEventListener('change', updateSummary);

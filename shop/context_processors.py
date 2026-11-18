@@ -1,5 +1,6 @@
 """模板全局上下文 - 把站点配置注入所有模板"""
 from django.conf import settings
+from django.utils.translation import gettext
 
 
 def site_settings(request):
@@ -9,8 +10,8 @@ def site_settings(request):
     """
     return {
         'SITE_NAME': settings.SITE_NAME,
-        'SITE_SLOGAN': settings.SITE_SLOGAN,
-        'SITE_FOOTER_TEXT': settings.SITE_FOOTER_TEXT,
+        'SITE_SLOGAN': gettext(settings.SITE_SLOGAN),
+        'SITE_FOOTER_TEXT': gettext(settings.SITE_FOOTER_TEXT),
         'FRONTEND_ASSETS': settings.FRONTEND_ASSETS,
         'MAX_UPLOAD_IMAGES': settings.MAX_UPLOAD_IMAGES,
         'MAX_SPEC_DIMENSIONS': settings.MAX_SPEC_DIMENSIONS,

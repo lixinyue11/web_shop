@@ -1,10 +1,11 @@
 {% extends 'merchant/base.html' %}
-{% block title %}图片收集{% endblock %}
+{% load i18n %}
+{% block title %}{% translate '图片收集' %}{% endblock %}
 
 {% block merchant_content %}
-<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-images me-2"></i>图片收集</h4>
+<h4 class="mb-4" style="color: var(--pink-dark);"><i class="bi bi-images me-2"></i>{% translate '图片收集' %}</h4>
 
-<p class="text-muted mb-4">用户上传给您的图片，包含用户名称和上传时间</p>
+<p class="text-muted mb-4">{% translate '用户上传给您的图片，包含用户名称和上传时间' %}</p>
 
 {% if collections %}
 <div class="row g-4">
@@ -21,8 +22,8 @@
                 <p class="small text-muted mb-2">{{ item.note }}</p>
                 {% endif %}
                 <small class="text-muted d-block mb-2">{{ item.created_at|date:"Y-m-d H:i" }}</small>
-                <a href="{% url 'merchant_delete_collection' item.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('确定删除这张图片？')">
-                    <i class="bi bi-trash"></i> 删除
+                <a href="{% url 'merchant_delete_collection' item.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('{% translate '确定删除这张图片？' %}')">
+                    <i class="bi bi-trash"></i> {% translate '删除' %}
                 </a>
             </div>
         </div>
@@ -32,7 +33,7 @@
 {% else %}
 <div class="text-center py-5">
     <i class="bi bi-images display-1" style="color: var(--pink-soft);"></i>
-    <p class="mt-3 text-muted">还没有用户上传图片</p>
+    <p class="mt-3 text-muted">{% translate '还没有用户上传图片' %}</p>
 </div>
 {% endif %}
 {% endblock %}

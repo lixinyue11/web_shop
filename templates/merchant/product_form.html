@@ -1,10 +1,11 @@
 {% extends 'merchant/base.html' %}
-{% block title %}{% if is_edit %}编辑{% else %}添加{% endif %}商品{% endblock %}
+{% load i18n %}
+{% block title %}{% if is_edit %}{% translate '编辑' %}{% else %}{% translate '添加' %}{% endif %}{% translate '商品' %}{% endblock %}
 
 {% block merchant_content %}
 <h4 class="mb-4" style="color: var(--pink-dark);">
     <i class="bi bi-{% if is_edit %}pencil{% else %}plus{% endif %} me-2"></i>
-    {% if is_edit %}编辑{% else %}添加{% endif %}商品
+    {% if is_edit %}{% translate '编辑' %}{% else %}{% translate '添加' %}{% endif %}{% translate '商品' %}
 </h4>
 
 <div class="card p-4">
@@ -16,40 +17,40 @@
         {% for error in form.non_field_errors %}<div class="alert alert-danger py-2">{{ error }}</div>{% endfor %}
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label for="{{ form.category.id_for_label }}" class="form-label">一级类目 *</label>
+                <label for="{{ form.category.id_for_label }}" class="form-label">{% translate '一级类目 *' %}</label>
                 {{ form.category }}
             </div>
             <div class="col-md-6 mb-3">
-                <label for="{{ form.subcategory.id_for_label }}" class="form-label">二级类目 *</label>
+                <label for="{{ form.subcategory.id_for_label }}" class="form-label">{% translate '二级类目 *' %}</label>
                 {{ form.subcategory }}
             </div>
         </div>
 
         <div class="mb-3">
-            <label for="{{ form.name.id_for_label }}" class="form-label">商品名称 *</label>
+            <label for="{{ form.name.id_for_label }}" class="form-label">{% translate '商品名称 *' %}</label>
             {{ form.name }}
         </div>
 
         <div class="row">
             <div class="col-md-4 mb-3">
-                <label for="{{ form.price.id_for_label }}" class="form-label">价格 *</label>
+                <label for="{{ form.price.id_for_label }}" class="form-label">{% translate '价格 *' %}</label>
                 <div class="input-group">
                     <span class="input-group-text">¥</span>
                     {{ form.price }}
                 </div>
-                <div class="form-text">新增规格组合默认使用此价格</div>
+                <div class="form-text">{% translate '新增规格组合默认使用此价格' %}</div>
             </div>
             <div class="col-md-4 mb-3">
-                <label for="{{ form.original_price.id_for_label }}" class="form-label">原价</label>
+                <label for="{{ form.original_price.id_for_label }}" class="form-label">{% translate '原价' %}</label>
                 <div class="input-group">
                     <span class="input-group-text">¥</span>
                     {{ form.original_price }}
                 </div>
             </div>
             <div class="col-md-4 mb-3">
-                <label for="{{ form.stock.id_for_label }}" class="form-label">库存 *</label>
+                <label for="{{ form.stock.id_for_label }}" class="form-label">{% translate '库存 *' %}</label>
                 {{ form.stock }}
-                <div class="form-text">仅用于无规格的商品</div>
+                <div class="form-text">{% translate '仅用于无规格的商品' %}</div>
             </div>
         </div>
 
@@ -58,19 +59,19 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h6 class="mb-0" style="color: var(--pink-dark);">
-                        <i class="bi bi-palette me-1"></i>商品规格（选填）
+                        <i class="bi bi-palette me-1"></i>{% translate '商品规格（选填）' %}
                     </h6>
                 </div>
                 <div class="d-flex flex-wrap gap-2 mb-3">
-                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow('颜色')">添加颜色</button>
-                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow('尺码')">添加尺码</button>
-                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow('型号')">添加型号</button>
-                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow()">自定义规格</button>
+                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow('{% translate '颜色' %}')">{% translate '添加颜色' %}</button>
+                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow('{% translate '尺码' %}')">{% translate '添加尺码' %}</button>
+                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow('{% translate '型号' %}')">{% translate '添加型号' %}</button>
+                    <button type="button" class="btn btn-sm btn-outline-pink" onclick="addSpecRow()">{% translate '自定义规格' %}</button>
                 </div>
                 <p class="text-muted small mb-3">
-                    填写颜色、尺码、型号等规格后，系统会自动生成所有组合，可分别设置价格和库存。
-                    不填则按上方统一价格和库存销售。最多 {{ MAX_SPEC_DIMENSIONS }} 个规格维度。
-                    {% if is_edit and product.has_specs %}新增、删除或重命名规格维度会重新生成组合，请重新设置价格和库存。{% endif %}
+                    {% translate '填写颜色、尺码、型号等规格后，系统会自动生成所有组合，可分别设置价格和库存。' %}
+                    {% translate '不填则按上方统一价格和库存销售。最多' %} {{ MAX_SPEC_DIMENSIONS }} {% translate '个规格维度。' %}
+                    {% if is_edit and product.has_specs %}{% translate '新增、删除或重命名规格维度会重新生成组合，请重新设置价格和库存。' %}{% endif %}
                 </p>
 
                 <div id="specRows">
@@ -78,11 +79,11 @@
                     <div class="row g-2 mb-2 spec-row">
                         <div class="col-4">
                             <input type="text" name="spec_name_{{ forloop.counter0 }}" class="form-control form-control-sm spec-name"
-                                   value="{{ spec.name }}" placeholder="规格名，如 颜色" maxlength="50" aria-label="规格名称">
+                                   value="{{ spec.name }}" placeholder="{% translate '规格名，如 颜色' %}" maxlength="50" aria-label="{% translate '规格名称' %}">
                         </div>
                         <div class="col-7">
                             <input type="text" name="spec_values_{{ forloop.counter0 }}" class="form-control form-control-sm spec-values"
-                                   value="{{ spec.values }}" placeholder="可选值，用逗号分隔，如 红色,黑色" maxlength="500" aria-label="规格选项">
+                                   value="{{ spec.values }}" placeholder="{% translate '可选值，用逗号分隔，如 红色,黑色' %}" maxlength="500" aria-label="{% translate '规格选项' %}">
                         </div>
                         <div class="col-1">
                             <button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removeSpecRow(this)">
@@ -98,7 +99,7 @@
                 {% if is_edit and product.skus.exists %}
                 <div class="mt-3 pt-3 border-top">
                     <a href="{% url 'merchant_product_skus' product.id %}" class="btn btn-sm btn-pink">
-                        <i class="bi bi-sliders me-1"></i>管理 {{ product.skus.count }} 个规格组合的价格库存
+                        <i class="bi bi-sliders me-1"></i>{% translate '管理' %} {{ product.skus.count }} {% translate '个规格组合的价格库存' %}
                     </a>
                 </div>
                 {% endif %}
@@ -106,22 +107,22 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">商品描述</label>
+            <label class="form-label">{% translate '商品描述' %}</label>
             {{ form.description }}
         </div>
 
         <div class="mb-3">
-            <label class="form-label">商品图片（可多选）</label>
+            <label class="form-label">{% translate '商品图片（可多选）' %}</label>
             <input type="file" name="images" class="form-control" accept="image/*" multiple>
             {% if is_edit and product.images.exists %}
             <div class="mt-2">
-                <small class="text-muted">当前图片：</small>
+                <small class="text-muted">{% translate '当前图片：' %}</small>
                 <div class="d-flex flex-wrap gap-2 mt-2">
                     {% for img in product.images.all %}
                     <img src="{{ img.image.url }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
                     {% endfor %}
                 </div>
-                <small class="text-muted">上传新图片将替换现有图片</small>
+                <small class="text-muted">{% translate '上传新图片将替换现有图片' %}</small>
             </div>
             {% endif %}
         </div>
@@ -130,20 +131,20 @@
             <div class="col-md-6">
                 <div class="form-check">
                     {{ form.is_active }}
-                    <label class="form-check-label" for="{{ form.is_active.id_for_label }}">上架销售</label>
+                    <label class="form-check-label" for="{{ form.is_active.id_for_label }}">{% translate '上架销售' %}</label>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-check">
                     {{ form.is_featured }}
-                    <label class="form-check-label" for="{{ form.is_featured.id_for_label }}">首页推荐</label>
+                    <label class="form-check-label" for="{{ form.is_featured.id_for_label }}">{% translate '首页推荐' %}</label>
                 </div>
             </div>
         </div>
 
         <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-pink px-4">保存</button>
-            <a href="{% url 'merchant_products' %}" class="btn btn-outline-secondary">取消</a>
+            <button type="submit" class="btn btn-pink px-4">{% translate '保存' %}</button>
+            <a href="{% url 'merchant_products' %}" class="btn btn-outline-secondary">{% translate '取消' %}</a>
         </div>
     </form>
 </div>
@@ -156,7 +157,7 @@ document.getElementById('categorySelect').addEventListener('change', function() 
     const subSelect = document.getElementById('subcategorySelect');
 
     if (!categoryId) {
-        subSelect.replaceChildren(new Option('请先选择一级类目', ''));
+        subSelect.replaceChildren(new Option('{{ _('请先选择一级类目')|escapejs }}', ''));
         return;
     }
 
@@ -164,7 +165,7 @@ document.getElementById('categorySelect').addEventListener('change', function() 
         .then(response => response.json())
         .then(data => {
             if (this.value !== categoryId) return;
-            subSelect.replaceChildren(new Option('请选择二级类目', ''));
+            subSelect.replaceChildren(new Option('{{ _('请选择二级类目')|escapejs }}', ''));
             data.subcategories.forEach(sub => {
                 subSelect.add(new Option(sub.name, sub.id));
             });
@@ -190,7 +191,7 @@ function addSpecRow(name = '') {
         return;
     }
     if (container.querySelectorAll('.spec-row').length >= MAX_SPECS) {
-        alert('最多只能添加 ' + MAX_SPECS + ' 个规格维度');
+        alert('{{ _('最多只能添加')|escapejs }} ' + MAX_SPECS + ' {{ _('个规格维度')|escapejs }}');
         return;
     }
 
@@ -199,11 +200,11 @@ function addSpecRow(name = '') {
     row.innerHTML = `
         <div class="col-4">
             <input type="text" class="form-control form-control-sm spec-name"
-                   placeholder="规格名，如 颜色" maxlength="50" aria-label="规格名称">
+                   placeholder="{{ _('规格名，如 颜色')|escapejs }}" maxlength="50" aria-label="{{ _('规格名称')|escapejs }}">
         </div>
         <div class="col-7">
             <input type="text" class="form-control form-control-sm spec-values"
-                   placeholder="可选值，用逗号分隔，如 红色,黑色" maxlength="500" aria-label="规格选项">
+                   placeholder="{{ _('可选值，用逗号分隔，如 红色,黑色')|escapejs }}" maxlength="500" aria-label="{{ _('规格选项')|escapejs }}">
         </div>
         <div class="col-1">
             <button type="button" class="btn btn-sm btn-outline-danger w-100" onclick="removeSpecRow(this)">
@@ -243,7 +244,7 @@ function updatePreview() {
         }
     });
 
-    preview.textContent = dimensions ? `将生成 ${total} 个规格组合（最多 ${MAX_COMBINATIONS} 个）` : '';
+    preview.textContent = dimensions ? `{{ _('将生成')|escapejs }} ${total} {{ _('个规格组合（最多')|escapejs }} ${MAX_COMBINATIONS} {{ _('个）')|escapejs }}` : '';
     preview.classList.toggle('text-danger', total > MAX_COMBINATIONS);
 }
 

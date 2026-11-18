@@ -1,4 +1,5 @@
 """业务逻辑辅助函数"""
+from django.utils.translation import gettext as _
 from itertools import product as cartesian_product
 from math import prod
 
@@ -19,11 +20,11 @@ def build_spec_combinations(specs):
     value_lists = [spec.value_list for spec in specs]
 
     if value_lists and prod(map(len, value_lists)) > settings.MAX_SKU_COMBINATIONS:
-        raise ValidationError(f'规格组合不能超过 {settings.MAX_SKU_COMBINATIONS} 个，请减少选项')
+        raise ValidationError(_('规格组合不能超过 %(v0)s 个，请减少选项') % {'v0': settings.MAX_SKU_COMBINATIONS})
 
     combinations = [ProductSKU.SEPARATOR.join(combo) for combo in cartesian_product(*value_lists)] if value_lists else []
     if any(len(combo) > 300 for combo in combinations):
-        raise ValidationError('规格组合文字太长，请缩短规格选项')
+        raise ValidationError(_('规格组合文字太长，请缩短规格选项'))
     return combinations
 
 
@@ -88,22 +89,22 @@ def parse_spec_inputs(post_data):
 
 def validate_spec_inputs(specs):
     if len(specs) > settings.MAX_SPEC_DIMENSIONS:
-        raise ValidationError(f'最多可填写 {settings.MAX_SPEC_DIMENSIONS} 个规格维度')
+        raise ValidationError(_('最多可填写 %(v0)s 个规格维度') % {'v0': settings.MAX_SPEC_DIMENSIONS})
 
     names = set()
     for spec in specs:
         if not spec.name or len(spec.name) > 50:
-            raise ValidationError('规格名称须填写，且最多 50 个字符')
+            raise ValidationError(_('规格名称须填写，且最多 50 个字符'))
         values = spec.value_list
         if not values:
-            raise ValidationError(f'请填写「{spec.name}」的规格选项')
+            raise ValidationError(_('请填写「%(v0)s」的规格选项') % {'v0': spec.name})
         if spec.name in names:
-            raise ValidationError(f'规格名称「{spec.name}」重复')
+            raise ValidationError(_('规格名称「%(v0)s」重复') % {'v0': spec.name})
         if any(ProductSKU.SEPARATOR in f' {value} ' for value in values):
-            raise ValidationError(f'「{spec.name}」的选项中，请去掉斜线两侧的空格，例如使用 USB/Type-C')
+            raise ValidationError(_('「%(v0)s」的选项中，请去掉斜线两侧的空格，例如使用 USB/Type-C') % {'v0': spec.name})
         spec.values = ','.join(values)
         if len(spec.values) > 500:
-            raise ValidationError(f'「{spec.name}」的选项合计不能超过 500 个字符')
+            raise ValidationError(_('「%(v0)s」的选项合计不能超过 500 个字符') % {'v0': spec.name})
         names.add(spec.name)
 
     return build_spec_combinations(specs)
@@ -117,25 +118,25 @@ def resolve_order_sku(product, sku_id):
     """
     if not product.has_specs:
         if sku_id:
-            return None, None, '商品规格已更新，请重新确认订单'
+            return None, None, _('商品规格已更新，请重新确认订单')
         if product.stock <= 0:
-            return None, product.price, '该商品已售罄'
+            return None, product.price, _('该商品已售罄')
         return None, product.price, None
 
     if not sku_id:
-        return None, None, '请选择商品规格'
+        return None, None, _('请选择商品规格')
 
     if not (sku_id.isascii() and sku_id.isdecimal() and len(sku_id) <= 19 and int(sku_id) <= 9223372036854775807):
-        return None, None, '所选规格不存在，请重新选择'
+        return None, None, _('所选规格不存在，请重新选择')
 
     sku = product.skus.filter(id=sku_id).first()
     if not sku:
-        return None, None, '所选规格不存在，请重新选择'
+        return None, None, _('所选规格不存在，请重新选择')
 
     if not sku.is_active:
-        return None, None, f'规格「{sku.spec_values}」已下架'
+        return None, None, _('规格「%(v0)s」已下架') % {'v0': sku.spec_values}
 
     if sku.stock <= 0:
-        return None, None, f'规格「{sku.spec_values}」已售罄'
+        return None, None, _('规格「%(v0)s」已售罄') % {'v0': sku.spec_values}
 
     return sku, sku.price, None

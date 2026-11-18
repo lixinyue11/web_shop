@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}" style="color: var(--pink-main);">首页</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" style="color: var(--pink-main);">{% translate '首页' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'shop_detail' product.merchant.id %}" style="color: var(--pink-main);">{{ product.merchant.display_name }}</a></li>
             <li class="breadcrumb-item active">{{ product.name }}</li>
         </ol>
@@ -50,18 +51,18 @@
                     <span class="category-badge">{{ product.subcategory.name }}</span>
                 </div>
                 <div class="mb-4">
-                    <span class="product-price fs-2" id="productPrice">¥{{ product.display_price }}{% if specs %} 起{% endif %}</span>
+                    <span class="product-price fs-2" id="productPrice">¥{{ product.display_price }}{% if specs %} {% translate '起' %}{% endif %}</span>
                     {% if product.original_price %}
                     <span class="product-original-price fs-5 ms-2">¥{{ product.original_price }}</span>
                     {% endif %}
                 </div>
-                <p class="text-muted mb-4" id="productStock" aria-live="polite">库存：{{ product.total_stock }} 件</p>
+                <p class="text-muted mb-4" id="productStock" aria-live="polite">{% translate '库存：' %}{{ product.total_stock }} {% translate '件' %}</p>
 
                 <div class="d-grid gap-2">
                     {% if user.is_authenticated %}
                     <button class="btn btn-outline-pink btn-lg" onclick="toggleFavorite({{ product.id }})" id="favoriteBtn">
                         <i class="bi bi-heart{% if is_favorited %}-fill{% endif %}"></i>
-                        <span id="favText">{% if is_favorited %}已收藏{% else %}收藏{% endif %}</span>
+                        <span id="favText">{% if is_favorited %}{% translate '已收藏' %}{% else %}{% translate '收藏' %}{% endif %}</span>
                     </button>
                     {% endif %}
                     <form method="get" action="{% url 'create_order' product.id %}" id="purchaseForm" class="d-grid gap-2">
@@ -69,7 +70,7 @@
                         <div>
                             <label for="spec-{{ spec.pk }}" class="form-label mb-1">{{ spec.name }}</label>
                             <select id="spec-{{ spec.pk }}" class="form-select" data-spec required>
-                                <option value="">请选择{{ spec.name }}</option>
+                                <option value="">{% translate '请选择' %}{{ spec.name }}</option>
                                 {% for value in spec.value_list %}
                                 <option value="{{ value }}">{{ value }}</option>
                                 {% endfor %}
@@ -78,17 +79,17 @@
                         {% endfor %}
                         {% if specs %}
                         <input type="hidden" name="sku">
-                        <noscript><a href="{% url 'create_order' product.id %}">前往下单页选择规格</a></noscript>
+                        <noscript><a href="{% url 'create_order' product.id %}">{% translate '前往下单页选择规格' %}</a></noscript>
                         {% endif %}
                         <button type="submit" class="btn btn-pink btn-lg" {% if specs or not product.total_stock %}disabled{% endif %}>
-                            <i class="bi bi-bag-plus me-2"></i>{% if not product.total_stock %}已售罄{% elif user.is_authenticated %}立即购买{% else %}登录后购买{% endif %}
+                            <i class="bi bi-bag-plus me-2"></i>{% if not product.total_stock %}{% translate '已售罄' %}{% elif user.is_authenticated %}{% translate '立即购买' %}{% else %}{% translate '登录后购买' %}{% endif %}
                         </button>
                     </form>
                 </div>
             </div>
 
             <div class="card p-4 mt-4">
-                <h5 style="color: var(--pink-dark);">商品详情</h5>
+                <h5 style="color: var(--pink-dark);">{% translate '商品详情' %}</h5>
                 <hr>
                 <div>{{ product.description|linebreaks }}</div>
             </div>
@@ -97,7 +98,7 @@
 
     {% if related_products %}
     <div class="mt-5">
-        <h5 style="color: var(--pink-dark);"><i class="bi bi-shop me-2"></i>店铺其他商品</h5>
+        <h5 style="color: var(--pink-dark);"><i class="bi bi-shop me-2"></i>{% translate '店铺其他商品' %}</h5>
         <div class="row g-4 mt-2">
             {% for p in related_products %}
             <div class="col-6 col-md-3">
@@ -111,7 +112,7 @@
                     </a>
                     <div class="card-body">
                         <h6 class="card-title text-truncate">{{ p.name }}</h6>
-                        <span class="product-price">¥{{ p.display_price }}{% if p.has_specs %} 起{% endif %}</span>
+                        <span class="product-price">¥{{ p.display_price }}{% if p.has_specs %} {% translate '起' %}{% endif %}</span>
                     </div>
                 </div>
             </div>
@@ -144,8 +145,8 @@
         purchase.disabled = !sku?.stock;
         price.textContent = sku ? `¥${sku.price}` : startingPrice;
         stock.textContent = sku
-            ? (sku.stock ? `库存：${sku.stock} 件` : '所选规格已售罄')
-            : (complete ? '所选规格暂不可购买，请选择其他组合' : totalStock);
+            ? (sku.stock ? `{{ _('库存：')|escapejs }}${sku.stock} {{ _('件')|escapejs }}` : '{{ _('所选规格已售罄')|escapejs }}')
+            : (complete ? '{{ _('所选规格暂不可购买，请选择其他组合')|escapejs }}' : totalStock);
     });
 })();
 </script>
@@ -167,10 +168,10 @@ function toggleFavorite(productId) {
             const text = document.getElementById('favText');
             if (data.favorited) {
                 icon.className = 'bi bi-heart-fill';
-                text.textContent = '已收藏';
+                text.textContent = '{{ _('已收藏')|escapejs }}';
             } else {
                 icon.className = 'bi bi-heart';
-                text.textContent = '收藏';
+                text.textContent = '{{ _('收藏')|escapejs }}';
             }
         }
         alert(data.message);

@@ -1,4 +1,5 @@
 """商店视图"""
+from django.utils.translation import gettext as _
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import OperationalError, transaction
@@ -26,10 +27,10 @@ def merchant_required(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
-            messages.warning(request, '请先登录')
+            messages.warning(request, _('请先登录'))
             return redirect('login')
         if not request.user.is_merchant:
-            messages.error(request, '需要商家权限')
+            messages.error(request, _('需要商家权限'))
             return redirect('home')
         return view_func(request, *args, **kwargs)
     return wrapper
@@ -97,8 +98,8 @@ def toggle_favorite(request, product_id):
 
     if not created:
         fav.delete()
-        return JsonResponse({'success': True, 'favorited': False, 'message': '已取消收藏'})
-    return JsonResponse({'success': True, 'favorited': True, 'message': '收藏成功'})
+        return JsonResponse({'success': True, 'favorited': False, 'message': _('已取消收藏')})
+    return JsonResponse({'success': True, 'favorited': True, 'message': _('收藏成功')})
 
 
 @login_required
@@ -126,7 +127,7 @@ def create_order(request, product_id):
                 quantity = form.cleaned_data['quantity']
                 inventory = sku or product
                 if quantity > inventory.stock:
-                    raise ValidationError(f'库存不足，当前仅剩 {inventory.stock} 件')
+                    raise ValidationError(_('库存不足，当前仅剩 %(v0)s 件') % {'v0': inventory.stock})
 
                 order = form.save(commit=False)
                 order.user = request.user
@@ -148,9 +149,9 @@ def create_order(request, product_id):
         except OperationalError as exc:
             if 'locked' not in str(exc).lower():
                 raise
-            form.add_error(None, '库存正在更新，请重新提交订单')
+            form.add_error(None, _('库存正在更新，请重新提交订单'))
         else:
-            messages.success(request, f'下单成功！订单号：{order.order_no}')
+            messages.success(request, _('下单成功！订单号：%(v0)s') % {'v0': order.order_no})
             return redirect('my_orders')
 
     skus = list(product.skus.filter(is_active=True))
@@ -199,7 +200,7 @@ def merchant_shop_settings(request):
         if request.FILES.get('shop_logo'):
             request.user.shop_logo = request.FILES['shop_logo']
         request.user.save()
-        messages.success(request, '店铺信息已更新')
+        messages.success(request, _('店铺信息已更新'))
         return redirect('merchant_shop_settings')
 
     return render(request, 'merchant/shop_settings.html')
@@ -215,12 +216,12 @@ def merchant_categories(request):
             name = request.POST.get('name', '').strip()
             if name:
                 Category.objects.get_or_create(name=name)
-                messages.success(request, f'类目 "{name}" 创建成功')
+                messages.success(request, _('类目 "%(v0)s" 创建成功') % {'v0': name})
 
         elif action == 'delete_category':
             cat_id = request.POST.get('category_id')
             Category.objects.filter(id=cat_id).delete()
-            messages.success(request, '类目已删除')
+            messages.success(request, _('类目已删除'))
 
         elif action == 'add_subcategory':
             cat_id = request.POST.get('category_id')
@@ -228,12 +229,12 @@ def merchant_categories(request):
             if cat_id and subname:
                 category = get_object_or_404(Category, id=cat_id)
                 SubCategory.objects.get_or_create(category=category, name=subname)
-                messages.success(request, f'二级类目 "{subname}" 创建成功')
+                messages.success(request, _('二级类目 "%(v0)s" 创建成功') % {'v0': subname})
 
         elif action == 'delete_subcategory':
             sub_id = request.POST.get('subcategory_id')
             SubCategory.objects.filter(id=sub_id).delete()
-            messages.success(request, '二级类目已删除')
+            messages.success(request, _('二级类目已删除'))
 
         return redirect('merchant_categories')
 
@@ -302,9 +303,9 @@ def merchant_product_form(request, product):
                     for i, img in enumerate(images):
                         ProductImage.objects.create(product=product, image=img, is_main=(i == 0))
 
-            messages.success(request, '商品已更新' if is_edit else '商品添加成功')
+            messages.success(request, _('商品已更新') if is_edit else _('商品添加成功'))
             if specs and (created or removed):
-                messages.info(request, f'新增 {created} 个规格组合，移除 {removed} 个。请设置组合的价格和库存。')
+                messages.info(request, _('新增 %(v0)s 个规格组合，移除 %(v1)s 个。请设置组合的价格和库存。') % {'v0': created, 'v1': removed})
                 return redirect('merchant_product_skus', product_id=product.id)
             return redirect('merchant_products')
 
@@ -343,7 +344,7 @@ def save_sku_settings(request, product):
     if action == 'regenerate':
         combinations = build_spec_combinations(product.specs.all())
         created, removed = sync_product_skus(product, combinations)
-        messages.success(request, f'已重新生成，新增 {created} 个、移除 {removed} 个')
+        messages.success(request, _('已重新生成，新增 %(v0)s 个、移除 %(v1)s 个') % {'v0': created, 'v1': removed})
         return
 
     if action == 'batch':
@@ -354,22 +355,22 @@ def save_sku_settings(request, product):
         for field in form.fields.values():
             field.required = False
         if not form.is_valid():
-            raise ValidationError(['批量设置：' + error for errors in form.errors.values() for error in errors])
+            raise ValidationError([_('批量设置：') + error for errors in form.errors.values() for error in errors])
         updates = {key: value for key, value in form.cleaned_data.items() if value is not None}
         if updates:
             product.skus.all().update(**updates)
-            messages.success(request, '批量设置完成')
+            messages.success(request, _('批量设置完成'))
         return
 
     if action != 'save':
-        raise ValidationError('未知的规格管理操作')
+        raise ValidationError(_('未知的规格管理操作'))
 
     updates = []
     for sku in product.skus.all():
         price = request.POST.get(f'price_{sku.pk}')
         stock = request.POST.get(f'stock_{sku.pk}')
         if price is None or stock is None:
-            raise ValidationError('规格组合已更新，请重新填写')
+            raise ValidationError(_('规格组合已更新，请重新填写'))
         current_stock = sku.stock
         form = SKUValuesForm({'price': price, 'stock': stock}, instance=sku)
         if not form.is_valid():
@@ -383,14 +384,14 @@ def save_sku_settings(request, product):
 
     if updates:
         ProductSKU.objects.bulk_update(updates, ['price', 'stock', 'is_active'])
-    messages.success(request, '规格设置已保存')
+    messages.success(request, _('规格设置已保存'))
 
 
 @merchant_required
 def merchant_product_delete(request, product_id):
     """删除商品 - 只能删除自己的商品"""
     Product.objects.filter(id=product_id, merchant=request.user).delete()
-    messages.success(request, '商品已删除')
+    messages.success(request, _('商品已删除'))
     return redirect('merchant_products')
 
 
@@ -401,7 +402,7 @@ def merchant_orders(request):
         order_id = request.POST.get('order_id')
         status = request.POST.get('status')
         Order.objects.filter(id=order_id, product__merchant=request.user).update(status=status)
-        messages.success(request, '订单状态已更新')
+        messages.success(request, _('订单状态已更新'))
         return redirect('merchant_orders')
 
     orders = Order.objects.filter(product__merchant=request.user).select_related('user', 'product', 'sku')
@@ -433,7 +434,7 @@ def upload_image_to_merchant(request, merchant_id):
         note = request.POST.get('note', '').strip()
 
         if not images:
-            messages.error(request, '请选择要上传的图片')
+            messages.error(request, _('请选择要上传的图片'))
         else:
             for img in images:
                 ImageCollection.objects.create(
@@ -442,7 +443,7 @@ def upload_image_to_merchant(request, merchant_id):
                     image=img,
                     note=note
                 )
-            messages.success(request, f'成功上传 {len(images)} 张图片给 {merchant.display_name}')
+            messages.success(request, _('成功上传 %(v0)s 张图片给 %(v1)s') % {'v0': len(images), 'v1': merchant.display_name})
             return redirect('shop_detail', merchant_id=merchant_id)
 
     return render(request, 'shop/upload_image.html', {'merchant': merchant})
@@ -466,5 +467,5 @@ def merchant_image_collections(request):
 def merchant_delete_collection(request, collection_id):
     """商家删除收到的图片"""
     ImageCollection.objects.filter(id=collection_id, merchant=request.user).delete()
-    messages.success(request, '图片已删除')
+    messages.success(request, _('图片已删除'))
     return redirect('merchant_image_collections')

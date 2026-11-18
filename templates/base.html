@@ -1,5 +1,5 @@
-{% load static %}<!DOCTYPE html>
-<html lang="zh-CN">
+{% load static i18n %}{% get_current_language as CURRENT_LANGUAGE %}<!DOCTYPE html>
+<html lang="{{ CURRENT_LANGUAGE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -129,35 +129,46 @@
             <a class="navbar-brand fw-bold" href="{% url 'home' %}">
                 <i class="bi bi-bag-heart-fill me-2"></i>{{ SITE_NAME }}
             </a>
+            <form action="{% url 'set_language' %}" method="post" class="ms-auto me-3">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" name="language"
+                        value="{% if CURRENT_LANGUAGE == 'es' %}zh-hans{% else %}es{% endif %}"
+                        class="btn btn-sm btn-outline-light"
+                        aria-label="{% if CURRENT_LANGUAGE == 'es' %}Cambiar a chino{% else %}切换到西班牙语{% endif %}"
+                        lang="{% if CURRENT_LANGUAGE == 'es' %}zh-Hans{% else %}es{% endif %}">
+                    {% if CURRENT_LANGUAGE == 'es' %}中文{% else %}Español{% endif %}
+                </button>
+            </form>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">{% translate '首页' %}</a></li>
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                         <li class="nav-item d-flex align-items-center me-3">
                             <span class="user-greeting">
                                 <i class="bi bi-person-circle me-1"></i>
-                                欢迎，<strong>{{ user.username }}</strong>
-                                {% if user.is_merchant %}(商家){% endif %}
+                                {% translate '欢迎，' %}<strong>{{ user.username }}</strong>
+                                {% if user.is_merchant %}({% translate '商家' %}){% endif %}
                             </span>
                         </li>
                         {% if user.is_merchant %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'merchant_dashboard' %}"><i class="bi bi-shop"></i> 商家后台</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'merchant_dashboard' %}"><i class="bi bi-shop"></i> {% translate '商家后台' %}</a></li>
                         {% else %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'my_favorites' %}"><i class="bi bi-heart"></i> 我的收藏</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'my_orders' %}"><i class="bi bi-box"></i> 我的订单</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{% url 'my_uploaded_images' %}"><i class="bi bi-images"></i> 我的图片</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'my_favorites' %}"><i class="bi bi-heart"></i> {% translate '我的收藏' %}</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'my_orders' %}"><i class="bi bi-box"></i> {% translate '我的订单' %}</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'my_uploaded_images' %}"><i class="bi bi-images"></i> {% translate '我的图片' %}</a></li>
                         {% endif %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> 退出</a>
+                            <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> {% translate '退出' %}</a>
                         </li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">登录</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">注册</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">{% translate '登录' %}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">{% translate '注册' %}</a></li>
                     {% endif %}
                 </ul>
             </div>
