@@ -1,0 +1,932 @@
+# SheShop interface translations.
+
+msgid ""
+msgstr "Project-Id-Version: SheShop\nLanguage: zh-hans\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=1; plural=0;\n"
+
+#, python-format
+msgid "「%(v0)s」的选项中，请去掉斜线两侧的空格，例如使用 USB/Type-C"
+msgstr "「%(v0)s」的选项中，请去掉斜线两侧的空格，例如使用 USB/Type-C"
+
+#, python-format
+msgid "「%(v0)s」的选项合计不能超过 500 个字符"
+msgstr "「%(v0)s」的选项合计不能超过 500 个字符"
+
+msgid "一级类目"
+msgstr "一级类目"
+
+msgid "一级类目 *"
+msgstr "一级类目 *"
+
+msgid "上传"
+msgstr "上传"
+
+msgid "上传Logo"
+msgstr "上传Logo"
+
+msgid "上传图片"
+msgstr "上传图片"
+
+msgid "上传图片给"
+msgstr "上传图片给"
+
+msgid "上传新图片将替换现有图片"
+msgstr "上传新图片将替换现有图片"
+
+msgid "上传时间"
+msgstr "上传时间"
+
+msgid "上传用户"
+msgstr "上传用户"
+
+msgid "上架"
+msgstr "上架"
+
+msgid "上架销售"
+msgstr "上架销售"
+
+msgid "下单"
+msgstr "下单"
+
+#, python-format
+msgid "下单成功！订单号：%(v0)s"
+msgstr "下单成功！订单号：%(v0)s"
+
+msgid "下单时间"
+msgstr "下单时间"
+
+msgid "下架"
+msgstr "下架"
+
+msgid "不填则按上方统一价格和库存销售。最多"
+msgstr "不填则按上方统一价格和库存销售。最多"
+
+msgid "专为女性打造的精品购物平台"
+msgstr "专为女性打造的精品购物平台"
+
+msgid "两次密码不一致"
+msgstr "两次密码不一致"
+
+msgid "两次输入的密码不一致"
+msgstr "两次输入的密码不一致"
+
+msgid "个组合）"
+msgstr "个组合）"
+
+msgid "个组合，总库存"
+msgstr "个组合，总库存"
+
+msgid "个规格组合的价格库存"
+msgstr "个规格组合的价格库存"
+
+msgid "个规格组合（最多"
+msgstr "个规格组合（最多"
+
+msgid "个规格维度"
+msgstr "个规格维度"
+
+msgid "个规格维度。"
+msgstr "个规格维度。"
+
+msgid "个）"
+msgstr "个）"
+
+msgid "主图"
+msgstr "主图"
+
+msgid "二级类目"
+msgstr "二级类目"
+
+#, python-format
+msgid "二级类目 \"%(v0)s\" 创建成功"
+msgstr "二级类目 \"%(v0)s\" 创建成功"
+
+msgid "二级类目 *"
+msgstr "二级类目 *"
+
+msgid "二级类目已删除"
+msgstr "二级类目已删除"
+
+msgid "仅用于无规格的商品"
+msgstr "仅用于无规格的商品"
+
+msgid "介绍一下您的店铺"
+msgstr "介绍一下您的店铺"
+
+msgid "件"
+msgstr "件"
+
+msgid "件商品"
+msgstr "件商品"
+
+msgid "价格"
+msgstr "价格"
+
+msgid "价格 *"
+msgstr "价格 *"
+
+msgid "保存"
+msgstr "保存"
+
+msgid "保存全部"
+msgstr "保存全部"
+
+msgid "保存设置"
+msgstr "保存设置"
+
+msgid "入驻开店"
+msgstr "入驻开店"
+
+msgid "全部商品"
+msgstr "全部商品"
+
+msgid "共"
+msgstr "共"
+
+msgid "创建时间"
+msgstr "创建时间"
+
+msgid "删除"
+msgstr "删除"
+
+msgid "前往下单页选择规格"
+msgstr "前往下单页选择规格"
+
+msgid "加入"
+msgstr "加入"
+
+msgid "原价"
+msgstr "原价"
+
+msgid "去添加规格"
+msgstr "去添加规格"
+
+msgid "去登录"
+msgstr "去登录"
+
+msgid "去购物"
+msgstr "去购物"
+
+msgid "去逛逛"
+msgstr "去逛逛"
+
+msgid "去逛逛店铺"
+msgstr "去逛逛店铺"
+
+msgid "发现属于你的美丽，精选优质商家为你服务"
+msgstr "发现属于你的美丽，精选优质商家为你服务"
+
+msgid "取消"
+msgstr "取消"
+
+msgid "可以添加一些说明"
+msgstr "可以添加一些说明"
+
+msgid "可售"
+msgstr "可售"
+
+msgid "可选值"
+msgstr "可选值"
+
+msgid "可选值，用逗号分隔，如 红色,黑色"
+msgstr "可选值，用逗号分隔，如 红色,黑色"
+
+msgid "售罄）"
+msgstr "售罄）"
+
+msgid "商品"
+msgstr "商品"
+
+msgid "商品信息"
+msgstr "商品信息"
+
+msgid "商品分类"
+msgstr "商品分类"
+
+msgid "商品列表"
+msgstr "商品列表"
+
+msgid "商品单价"
+msgstr "商品单价"
+
+msgid "商品名称"
+msgstr "商品名称"
+
+msgid "商品名称 *"
+msgstr "商品名称 *"
+
+msgid "商品图片"
+msgstr "商品图片"
+
+msgid "商品图片（可多选）"
+msgstr "商品图片（可多选）"
+
+msgid "商品已删除"
+msgstr "商品已删除"
+
+msgid "商品已更新"
+msgstr "商品已更新"
+
+msgid "商品总数"
+msgstr "商品总数"
+
+msgid "商品描述"
+msgstr "商品描述"
+
+msgid "商品添加成功"
+msgstr "商品添加成功"
+
+msgid "商品管理"
+msgstr "商品管理"
+
+msgid "商品规格"
+msgstr "商品规格"
+
+msgid "商品规格已更新，请重新确认订单"
+msgstr "商品规格已更新，请重新确认订单"
+
+msgid "商品规格（选填）"
+msgstr "商品规格（选填）"
+
+msgid "商品详情"
+msgstr "商品详情"
+
+msgid "商家"
+msgstr "商家"
+
+msgid "商家入驻"
+msgstr "商家入驻"
+
+msgid "商家入驻？"
+msgstr "商家入驻？"
+
+msgid "商家后台"
+msgstr "商家后台"
+
+msgid "商家注册"
+msgstr "商家注册"
+
+msgid "商家注册成功！"
+msgstr "商家注册成功！"
+
+msgid "商家账号"
+msgstr "商家账号"
+
+msgid "商家账号："
+msgstr "商家账号："
+
+msgid "图标"
+msgstr "图标"
+
+msgid "图片"
+msgstr "图片"
+
+msgid "图片已删除"
+msgstr "图片已删除"
+
+msgid "图片收集"
+msgstr "图片收集"
+
+msgid "型号"
+msgstr "型号"
+
+msgid "填写颜色、尺码、型号等规格后，系统会自动生成所有组合，可分别设置价格和库存。"
+msgstr "填写颜色、尺码、型号等规格后，系统会自动生成所有组合，可分别设置价格和库存。"
+
+msgid "备注"
+msgstr "备注"
+
+msgid "备注说明"
+msgstr "备注说明"
+
+msgid "备注说明（选填）"
+msgstr "备注说明（选填）"
+
+msgid "多个值用逗号分隔，如：红色,黑色,白色"
+msgstr "多个值用逗号分隔，如：红色,黑色,白色"
+
+msgid "女性精品购物"
+msgstr "女性精品购物"
+
+msgid "如果您是商家，欢迎"
+msgstr "如果您是商家，欢迎"
+
+msgid "如：服饰、美妆、配饰等"
+msgstr "如：服饰、美妆、配饰等"
+
+msgid "子类目名称"
+msgstr "子类目名称"
+
+msgid "密码"
+msgstr "密码"
+
+msgid "将按当前规格重新生成组合，已有组合的价格库存会保留。继续？"
+msgstr "将按当前规格重新生成组合，已有组合的价格库存会保留。继续？"
+
+msgid "将生成"
+msgstr "将生成"
+
+msgid "尺码"
+msgstr "尺码"
+
+msgid "已发货"
+msgstr "已发货"
+
+msgid "已取消"
+msgstr "已取消"
+
+msgid "已取消收藏"
+msgstr "已取消收藏"
+
+msgid "已售罄"
+msgstr "已售罄"
+
+msgid "已完成"
+msgstr "已完成"
+
+msgid "已收藏"
+msgstr "已收藏"
+
+msgid "已有账号？"
+msgstr "已有账号？"
+
+msgid "已确认"
+msgstr "已确认"
+
+msgid "已退出登录"
+msgstr "已退出登录"
+
+#, python-format
+msgid "已重新生成，新增 %(v0)s 个、移除 %(v1)s 个"
+msgstr "已重新生成，新增 %(v0)s 个、移除 %(v1)s 个"
+
+msgid "库存"
+msgstr "库存"
+
+msgid "库存 *"
+msgstr "库存 *"
+
+#, python-format
+msgid "库存不足，当前仅剩 %(v0)s 件"
+msgstr "库存不足，当前仅剩 %(v0)s 件"
+
+msgid "库存正在更新，请重新提交订单"
+msgstr "库存正在更新，请重新提交订单"
+
+msgid "库存："
+msgstr "库存："
+
+msgid "库存：0 件"
+msgstr "库存：0 件"
+
+msgid "应用到全部"
+msgstr "应用到全部"
+
+msgid "店铺"
+msgstr "店铺"
+
+msgid "店铺Logo"
+msgstr "店铺Logo"
+
+msgid "店铺信息"
+msgstr "店铺信息"
+
+msgid "店铺信息已更新"
+msgstr "店铺信息已更新"
+
+msgid "店铺其他商品"
+msgstr "店铺其他商品"
+
+msgid "店铺名称"
+msgstr "店铺名称"
+
+msgid "店铺推荐"
+msgstr "店铺推荐"
+
+msgid "店铺简介"
+msgstr "店铺简介"
+
+msgid "店铺设置"
+msgstr "店铺设置"
+
+msgid "店铺链接："
+msgstr "店铺链接："
+
+msgid "店铺预览"
+msgstr "店铺预览"
+
+msgid "张"
+msgstr "张"
+
+msgid "当前图片："
+msgstr "当前图片："
+
+msgid "待处理"
+msgstr "待处理"
+
+msgid "快捷操作"
+msgstr "快捷操作"
+
+msgid "总价"
+msgstr "总价"
+
+msgid "总金额"
+msgstr "总金额"
+
+msgid "您还没有设置店铺名称，"
+msgstr "您还没有设置店铺名称，"
+
+#, python-format
+msgid "成功上传 %(v0)s 张图片给 %(v1)s"
+msgstr "成功上传 %(v0)s 张图片给 %(v1)s"
+
+msgid "我上传的图片"
+msgstr "我上传的图片"
+
+msgid "我的图片"
+msgstr "我的图片"
+
+msgid "我的收藏"
+msgstr "我的收藏"
+
+msgid "我的订单"
+msgstr "我的订单"
+
+msgid "所属一级类目"
+msgstr "所属一级类目"
+
+msgid "所选规格"
+msgstr "所选规格"
+
+msgid "所选规格不存在，请重新选择"
+msgstr "所选规格不存在，请重新选择"
+
+msgid "所选规格已售罄"
+msgstr "所选规格已售罄"
+
+msgid "所选规格暂不可购买，请选择其他组合"
+msgstr "所选规格暂不可购买，请选择其他组合"
+
+msgid "手机号"
+msgstr "手机号"
+
+msgid "批量设置价格"
+msgstr "批量设置价格"
+
+msgid "批量设置完成"
+msgstr "批量设置完成"
+
+msgid "批量设置库存"
+msgstr "批量设置库存"
+
+msgid "批量设置："
+msgstr "批量设置："
+
+msgid "按当前规格生成组合"
+msgstr "按当前规格生成组合"
+
+msgid "排序"
+msgstr "排序"
+
+msgid "接收商家"
+msgstr "接收商家"
+
+msgid "控制台"
+msgstr "控制台"
+
+msgid "推荐"
+msgstr "推荐"
+
+msgid "提交订单"
+msgstr "提交订单"
+
+msgid "操作"
+msgstr "操作"
+
+msgid "支持 JPG、PNG 等图片格式，单次最多"
+msgstr "支持 JPG、PNG 等图片格式，单次最多"
+
+msgid "收到图片"
+msgstr "收到图片"
+
+msgid "收藏"
+msgstr "收藏"
+
+msgid "收藏成功"
+msgstr "收藏成功"
+
+msgid "收藏时间"
+msgstr "收藏时间"
+
+msgid "收藏统计"
+msgstr "收藏统计"
+
+msgid "收货信息"
+msgstr "收货信息"
+
+msgid "收货地址"
+msgstr "收货地址"
+
+msgid "数量"
+msgstr "数量"
+
+#, python-format
+msgid "新增 %(v0)s 个规格组合，移除 %(v1)s 个。请设置组合的价格和库存。"
+msgstr "新增 %(v0)s 个规格组合，移除 %(v1)s 个。请设置组合的价格和库存。"
+
+msgid "新增、删除或重命名规格维度会重新生成组合，请重新设置价格和库存。"
+msgstr "新增、删除或重命名规格维度会重新生成组合，请重新设置价格和库存。"
+
+msgid "新增规格组合默认使用此价格"
+msgstr "新增规格组合默认使用此价格"
+
+msgid "暂无入驻商家"
+msgstr "暂无入驻商家"
+
+msgid "暂无商品"
+msgstr "暂无商品"
+
+msgid "暂无子类目"
+msgstr "暂无子类目"
+
+msgid "暂无收藏记录"
+msgstr "暂无收藏记录"
+
+msgid "暂无订单"
+msgstr "暂无订单"
+
+msgid "更新时间"
+msgstr "更新时间"
+
+msgid "最多只能添加"
+msgstr "最多只能添加"
+
+#, python-format
+msgid "最多可填写 %(v0)s 个规格维度"
+msgstr "最多可填写 %(v0)s 个规格维度"
+
+msgid "未知的规格管理操作"
+msgstr "未知的规格管理操作"
+
+msgid "查看店铺"
+msgstr "查看店铺"
+
+msgid "欢迎回来"
+msgstr "欢迎回来"
+
+#, python-format
+msgid "欢迎回来，%(v0)s！"
+msgstr "欢迎回来，%(v0)s！"
+
+msgid "欢迎，"
+msgstr "欢迎，"
+
+msgid "注册"
+msgstr "注册"
+
+msgid "注册商家账号"
+msgstr "注册商家账号"
+
+msgid "注册成功！"
+msgstr "注册成功！"
+
+msgid "注册时间："
+msgstr "注册时间："
+
+msgid "添加"
+msgstr "添加"
+
+msgid "添加一级类目"
+msgstr "添加一级类目"
+
+msgid "添加商品"
+msgstr "添加商品"
+
+msgid "添加型号"
+msgstr "添加型号"
+
+msgid "添加子类目到"
+msgstr "添加子类目到"
+
+msgid "添加尺码"
+msgstr "添加尺码"
+
+msgid "添加颜色"
+msgstr "添加颜色"
+
+msgid "点击这里设置"
+msgstr "点击这里设置"
+
+msgid "状态"
+msgstr "状态"
+
+msgid "用户"
+msgstr "用户"
+
+msgid "用户上传给您的图片，包含用户名称和上传时间"
+msgstr "用户上传给您的图片，包含用户名称和上传时间"
+
+msgid "用户名"
+msgstr "用户名"
+
+msgid "用户名或密码错误"
+msgstr "用户名或密码错误"
+
+msgid "用户类型"
+msgstr "用户类型"
+
+msgid "留空不改"
+msgstr "留空不改"
+
+msgid "登录"
+msgstr "登录"
+
+msgid "登录后购买"
+msgstr "登录后购买"
+
+msgid "确定删除此商品？"
+msgstr "确定删除此商品？"
+
+msgid "确定删除此子类目？"
+msgstr "确定删除此子类目？"
+
+msgid "确定删除此类目及所有商品？"
+msgstr "确定删除此类目及所有商品？"
+
+msgid "确定删除这张图片？"
+msgstr "确定删除这张图片？"
+
+msgid "确认密码"
+msgstr "确认密码"
+
+msgid "确认订单"
+msgstr "确认订单"
+
+msgid "立即注册"
+msgstr "立即注册"
+
+msgid "立即购买"
+msgstr "立即购买"
+
+msgid "管理"
+msgstr "管理"
+
+msgid "类目"
+msgstr "类目"
+
+#, python-format
+msgid "类目 \"%(v0)s\" 创建成功"
+msgstr "类目 \"%(v0)s\" 创建成功"
+
+msgid "类目名称"
+msgstr "类目名称"
+
+msgid "类目已删除"
+msgstr "类目已删除"
+
+msgid "类目管理"
+msgstr "类目管理"
+
+msgid "精选店铺"
+msgstr "精选店铺"
+
+msgid "给您的店铺起个名字"
+msgstr "给您的店铺起个名字"
+
+msgid "编辑"
+msgstr "编辑"
+
+msgid "编辑商品"
+msgstr "编辑商品"
+
+msgid "联系人"
+msgstr "联系人"
+
+msgid "联系电话"
+msgstr "联系电话"
+
+msgid "自定义规格"
+msgstr "自定义规格"
+
+msgid "菜单"
+msgstr "菜单"
+
+msgid "被收藏数"
+msgstr "被收藏数"
+
+#, python-format
+msgid "规格「%(v0)s」已下架"
+msgstr "规格「%(v0)s」已下架"
+
+#, python-format
+msgid "规格「%(v0)s」已售罄"
+msgstr "规格「%(v0)s」已售罄"
+
+msgid "规格名称"
+msgstr "规格名称"
+
+#, python-format
+msgid "规格名称「%(v0)s」重复"
+msgstr "规格名称「%(v0)s」重复"
+
+msgid "规格名称须填写，且最多 50 个字符"
+msgstr "规格名称须填写，且最多 50 个字符"
+
+msgid "规格名，如 颜色"
+msgstr "规格名，如 颜色"
+
+msgid "规格管理"
+msgstr "规格管理"
+
+msgid "规格组合"
+msgstr "规格组合"
+
+#, python-format
+msgid "规格组合不能超过 %(v0)s 个，请减少选项"
+msgstr "规格组合不能超过 %(v0)s 个，请减少选项"
+
+msgid "规格组合已更新，请重新填写"
+msgstr "规格组合已更新，请重新填写"
+
+msgid "规格组合文字太长，请缩短规格选项"
+msgstr "规格组合文字太长，请缩短规格选项"
+
+msgid "规格维度"
+msgstr "规格维度"
+
+msgid "规格设置已保存"
+msgstr "规格设置已保存"
+
+msgid "规格选项"
+msgstr "规格选项"
+
+msgid "订单"
+msgstr "订单"
+
+msgid "订单号"
+msgstr "订单号"
+
+msgid "订单总数"
+msgstr "订单总数"
+
+msgid "订单状态已更新"
+msgstr "订单状态已更新"
+
+msgid "订单管理"
+msgstr "订单管理"
+
+msgid "让每一位女性都能找到属于自己的美丽"
+msgstr "让每一位女性都能找到属于自己的美丽"
+
+msgid "该商品已售罄"
+msgstr "该商品已售罄"
+
+msgid "该商品未设置规格维度"
+msgstr "该商品未设置规格维度"
+
+msgid "该商家账号已存在"
+msgstr "该商家账号已存在"
+
+msgid "该店铺暂无商品"
+msgstr "该店铺暂无商品"
+
+msgid "该用户名已存在"
+msgstr "该用户名已存在"
+
+msgid "该用户名已存在，请换一个或直接登录"
+msgstr "该用户名已存在，请换一个或直接登录"
+
+msgid "该用户名已被注册，请换一个"
+msgstr "该用户名已被注册，请换一个"
+
+msgid "请先在商品编辑页添加规格维度（如颜色、尺码）"
+msgstr "请先在商品编辑页添加规格维度（如颜色、尺码）"
+
+msgid "请先登录"
+msgstr "请先登录"
+
+msgid "请先选择一级类目"
+msgstr "请先选择一级类目"
+
+msgid "请再次输入密码"
+msgstr "请再次输入密码"
+
+#, python-format
+msgid "请填写「%(v0)s」的规格选项"
+msgstr "请填写「%(v0)s」的规格选项"
+
+msgid "请设置商家账号"
+msgstr "请设置商家账号"
+
+msgid "请设置密码"
+msgstr "请设置密码"
+
+msgid "请设置用户名"
+msgstr "请设置用户名"
+
+msgid "请输入商家账号"
+msgstr "请输入商家账号"
+
+msgid "请输入密码"
+msgstr "请输入密码"
+
+msgid "请输入手机号（选填）"
+msgstr "请输入手机号（选填）"
+
+msgid "请输入用户名"
+msgstr "请输入用户名"
+
+msgid "请输入用户名和密码"
+msgstr "请输入用户名和密码"
+
+msgid "请输入联系电话"
+msgstr "请输入联系电话"
+
+msgid "请输入邮箱"
+msgstr "请输入邮箱"
+
+msgid "请选择"
+msgstr "请选择"
+
+msgid "请选择一级类目"
+msgstr "请选择一级类目"
+
+msgid "请选择二级类目"
+msgstr "请选择二级类目"
+
+msgid "请选择商品规格"
+msgstr "请选择商品规格"
+
+msgid "请选择所属一级类目下的二级类目"
+msgstr "请选择所属一级类目下的二级类目"
+
+msgid "请选择要上传的图片"
+msgstr "请选择要上传的图片"
+
+msgid "请选择规格"
+msgstr "请选择规格"
+
+msgid "请选择规格查看库存"
+msgstr "请选择规格查看库存"
+
+msgid "购买"
+msgstr "购买"
+
+msgid "购买数量"
+msgstr "购买数量"
+
+msgid "起"
+msgstr "起"
+
+msgid "返回列表"
+msgstr "返回列表"
+
+msgid "还没有上传过图片"
+msgstr "还没有上传过图片"
+
+msgid "还没有商品，点击上方按钮添加"
+msgstr "还没有商品，点击上方按钮添加"
+
+msgid "还没有收藏商品哦"
+msgstr "还没有收藏商品哦"
+
+msgid "还没有用户上传图片"
+msgstr "还没有用户上传图片"
+
+msgid "还没有类目，点击上方按钮添加"
+msgstr "还没有类目，点击上方按钮添加"
+
+msgid "还没有规格组合"
+msgstr "还没有规格组合"
+
+msgid "还没有订单哦"
+msgstr "还没有订单哦"
+
+msgid "还没有账号？"
+msgstr "还没有账号？"
+
+msgid "退出"
+msgstr "退出"
+
+msgid "选择图片（可多选）"
+msgstr "选择图片（可多选）"
+
+msgid "重新生成组合"
+msgstr "重新生成组合"
+
+msgid "需要商家权限"
+msgstr "需要商家权限"
+
+msgid "顾客"
+msgstr "顾客"
+
+msgid "预览店铺"
+msgstr "预览店铺"
+
+msgid "颜色"
+msgstr "颜色"
+
+msgid "首页"
+msgstr "首页"
+
+msgid "首页推荐"
+msgstr "首页推荐"

@@ -1,0 +1,932 @@
+# SheShop interface translations.
+
+msgid ""
+msgstr "Project-Id-Version: SheShop\nLanguage: es\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#, python-format
+msgid "「%(v0)s」的选项中，请去掉斜线两侧的空格，例如使用 USB/Type-C"
+msgstr "En las opciones de «%(v0)s», elimina los espacios junto a la barra. Por ejemplo, USB/Type-C."
+
+#, python-format
+msgid "「%(v0)s」的选项合计不能超过 500 个字符"
+msgstr "Las opciones de «%(v0)s» no pueden superar los 500 caracteres en total."
+
+msgid "一级类目"
+msgstr "Categoría principal"
+
+msgid "一级类目 *"
+msgstr "Categoría principal *"
+
+msgid "上传"
+msgstr "Subir"
+
+msgid "上传Logo"
+msgstr "Subir logotipo"
+
+msgid "上传图片"
+msgstr "Subir imágenes"
+
+msgid "上传图片给"
+msgstr "Subir imágenes a "
+
+msgid "上传新图片将替换现有图片"
+msgstr "Las nuevas imágenes sustituirán a las actuales."
+
+msgid "上传时间"
+msgstr "Fecha de subida"
+
+msgid "上传用户"
+msgstr "Usuario que subió la imagen"
+
+msgid "上架"
+msgstr "Publicado"
+
+msgid "上架销售"
+msgstr "Publicar para la venta"
+
+msgid "下单"
+msgstr "Realizar pedido"
+
+#, python-format
+msgid "下单成功！订单号：%(v0)s"
+msgstr "¡Pedido realizado! Número de pedido: %(v0)s"
+
+msgid "下单时间"
+msgstr "Fecha del pedido"
+
+msgid "下架"
+msgstr "Oculto"
+
+msgid "不填则按上方统一价格和库存销售。最多"
+msgstr "Si lo dejas vacío, se usarán el precio y las existencias indicados arriba. Máximo:"
+
+msgid "专为女性打造的精品购物平台"
+msgstr "Una selección de compras para mujeres"
+
+msgid "两次密码不一致"
+msgstr "Las contraseñas no coinciden."
+
+msgid "两次输入的密码不一致"
+msgstr "Las contraseñas no coinciden."
+
+msgid "个组合）"
+msgstr "combinaciones)"
+
+msgid "个组合，总库存"
+msgstr "combinaciones. Existencias totales:"
+
+msgid "个规格组合的价格库存"
+msgstr "combinaciones: precios y existencias"
+
+msgid "个规格组合（最多"
+msgstr "combinaciones (máximo:"
+
+msgid "个规格维度"
+msgstr "atributos"
+
+msgid "个规格维度。"
+msgstr "atributos."
+
+msgid "个）"
+msgstr ")"
+
+msgid "主图"
+msgstr "Imagen principal"
+
+msgid "二级类目"
+msgstr "Subcategoría"
+
+#, python-format
+msgid "二级类目 \"%(v0)s\" 创建成功"
+msgstr "Se ha creado la subcategoría «%(v0)s»."
+
+msgid "二级类目 *"
+msgstr "Subcategoría *"
+
+msgid "二级类目已删除"
+msgstr "Subcategoría eliminada."
+
+msgid "仅用于无规格的商品"
+msgstr "Solo para productos sin variantes."
+
+msgid "介绍一下您的店铺"
+msgstr "Describe tu tienda"
+
+msgid "件"
+msgstr "unidades"
+
+msgid "件商品"
+msgstr "productos"
+
+msgid "价格"
+msgstr "Precio"
+
+msgid "价格 *"
+msgstr "Precio *"
+
+msgid "保存"
+msgstr "Guardar"
+
+msgid "保存全部"
+msgstr "Guardar todo"
+
+msgid "保存设置"
+msgstr "Guardar configuración"
+
+msgid "入驻开店"
+msgstr "Abrir una tienda"
+
+msgid "全部商品"
+msgstr "Todos los productos"
+
+msgid "共"
+msgstr "Total: "
+
+msgid "创建时间"
+msgstr "Fecha de creación"
+
+msgid "删除"
+msgstr "Eliminar"
+
+msgid "前往下单页选择规格"
+msgstr "Elegir variante en la página del pedido"
+
+msgid "加入"
+msgstr "Unirse"
+
+msgid "原价"
+msgstr "Precio original"
+
+msgid "去添加规格"
+msgstr "Añadir atributos"
+
+msgid "去登录"
+msgstr "Iniciar sesión"
+
+msgid "去购物"
+msgstr "Ir de compras"
+
+msgid "去逛逛"
+msgstr "Explorar"
+
+msgid "去逛逛店铺"
+msgstr "Explorar la tienda"
+
+msgid "发现属于你的美丽，精选优质商家为你服务"
+msgstr "Descubre tu estilo con nuestra selección de tiendas."
+
+msgid "取消"
+msgstr "Cancelar"
+
+msgid "可以添加一些说明"
+msgstr "Puedes añadir una descripción"
+
+msgid "可售"
+msgstr "A la venta"
+
+msgid "可选值"
+msgstr "Opciones"
+
+msgid "可选值，用逗号分隔，如 红色,黑色"
+msgstr "Opciones separadas por comas, por ejemplo: Rojo,Negro"
+
+msgid "售罄）"
+msgstr "Agotado)"
+
+msgid "商品"
+msgstr "Producto"
+
+msgid "商品信息"
+msgstr "Información del producto"
+
+msgid "商品分类"
+msgstr "Categorías de productos"
+
+msgid "商品列表"
+msgstr "Lista de productos"
+
+msgid "商品单价"
+msgstr "Precio unitario"
+
+msgid "商品名称"
+msgstr "Nombre del producto"
+
+msgid "商品名称 *"
+msgstr "Nombre del producto *"
+
+msgid "商品图片"
+msgstr "Imágenes del producto"
+
+msgid "商品图片（可多选）"
+msgstr "Imágenes del producto (selección múltiple)"
+
+msgid "商品已删除"
+msgstr "Producto eliminado."
+
+msgid "商品已更新"
+msgstr "Producto actualizado."
+
+msgid "商品总数"
+msgstr "Productos"
+
+msgid "商品描述"
+msgstr "Descripción del producto"
+
+msgid "商品添加成功"
+msgstr "Producto añadido."
+
+msgid "商品管理"
+msgstr "Gestión de productos"
+
+msgid "商品规格"
+msgstr "Variante del producto"
+
+msgid "商品规格已更新，请重新确认订单"
+msgstr "Las variantes del producto han cambiado. Revisa tu pedido."
+
+msgid "商品规格（选填）"
+msgstr "Atributos del producto (opcional)"
+
+msgid "商品详情"
+msgstr "Detalles del producto"
+
+msgid "商家"
+msgstr "Vendedor"
+
+msgid "商家入驻"
+msgstr "Abrir una tienda"
+
+msgid "商家入驻？"
+msgstr "¿Quieres abrir una tienda?"
+
+msgid "商家后台"
+msgstr "Panel del vendedor"
+
+msgid "商家注册"
+msgstr "Registro de vendedores"
+
+msgid "商家注册成功！"
+msgstr "¡Registro de vendedor completado!"
+
+msgid "商家账号"
+msgstr "Cuenta del vendedor"
+
+msgid "商家账号："
+msgstr "Cuenta del vendedor: "
+
+msgid "图标"
+msgstr "Icono"
+
+msgid "图片"
+msgstr "Imagen"
+
+msgid "图片已删除"
+msgstr "Imagen eliminada."
+
+msgid "图片收集"
+msgstr "Imágenes recibidas"
+
+msgid "型号"
+msgstr "Modelo"
+
+msgid "填写颜色、尺码、型号等规格后，系统会自动生成所有组合，可分别设置价格和库存。"
+msgstr "Añade atributos como color, talla o modelo para generar las combinaciones y asignarles precios y existencias."
+
+msgid "备注"
+msgstr "Notas"
+
+msgid "备注说明"
+msgstr "Descripción"
+
+msgid "备注说明（选填）"
+msgstr "Descripción (opcional)"
+
+msgid "多个值用逗号分隔，如：红色,黑色,白色"
+msgstr "Separa las opciones con comas, por ejemplo: Rojo,Negro,Blanco"
+
+msgid "女性精品购物"
+msgstr "Compras para mujeres"
+
+msgid "如果您是商家，欢迎"
+msgstr "Si eres vendedor, puedes "
+
+msgid "如：服饰、美妆、配饰等"
+msgstr "Por ejemplo: Ropa, Belleza, Accesorios"
+
+msgid "子类目名称"
+msgstr "Nombre de la subcategoría"
+
+msgid "密码"
+msgstr "Contraseña"
+
+msgid "将按当前规格重新生成组合，已有组合的价格库存会保留。继续？"
+msgstr "Se regenerarán las combinaciones con los atributos actuales y se conservarán los precios y existencias de las combinaciones existentes. ¿Continuar?"
+
+msgid "将生成"
+msgstr "Se generarán"
+
+msgid "尺码"
+msgstr "Talla"
+
+msgid "已发货"
+msgstr "Enviado"
+
+msgid "已取消"
+msgstr "Cancelado"
+
+msgid "已取消收藏"
+msgstr "Eliminado de favoritos."
+
+msgid "已售罄"
+msgstr "Agotado"
+
+msgid "已完成"
+msgstr "Completado"
+
+msgid "已收藏"
+msgstr "En favoritos"
+
+msgid "已有账号？"
+msgstr "¿Ya tienes una cuenta?"
+
+msgid "已确认"
+msgstr "Confirmado"
+
+msgid "已退出登录"
+msgstr "Has cerrado la sesión."
+
+#, python-format
+msgid "已重新生成，新增 %(v0)s 个、移除 %(v1)s 个"
+msgstr "Combinaciones regeneradas: %(v0)s añadidas y %(v1)s eliminadas."
+
+msgid "库存"
+msgstr "Existencias"
+
+msgid "库存 *"
+msgstr "Existencias *"
+
+#, python-format
+msgid "库存不足，当前仅剩 %(v0)s 件"
+msgstr "Existencias insuficientes. Solo quedan %(v0)s unidades."
+
+msgid "库存正在更新，请重新提交订单"
+msgstr "Se están actualizando las existencias. Vuelve a enviar el pedido."
+
+msgid "库存："
+msgstr "Existencias: "
+
+msgid "库存：0 件"
+msgstr "Existencias: 0 unidades"
+
+msgid "应用到全部"
+msgstr "Aplicar a todas"
+
+msgid "店铺"
+msgstr "Tienda"
+
+msgid "店铺Logo"
+msgstr "Logotipo de la tienda"
+
+msgid "店铺信息"
+msgstr "Información de la tienda"
+
+msgid "店铺信息已更新"
+msgstr "Información de la tienda actualizada."
+
+msgid "店铺其他商品"
+msgstr "Más productos de esta tienda"
+
+msgid "店铺名称"
+msgstr "Nombre de la tienda"
+
+msgid "店铺推荐"
+msgstr "Destacados de la tienda"
+
+msgid "店铺简介"
+msgstr "Descripción de la tienda"
+
+msgid "店铺设置"
+msgstr "Configuración de la tienda"
+
+msgid "店铺链接："
+msgstr "Enlace de la tienda: "
+
+msgid "店铺预览"
+msgstr "Vista previa de la tienda"
+
+msgid "张"
+msgstr "imágenes"
+
+msgid "当前图片："
+msgstr "Imágenes actuales: "
+
+msgid "待处理"
+msgstr "Pendiente"
+
+msgid "快捷操作"
+msgstr "Acciones rápidas"
+
+msgid "总价"
+msgstr "Total"
+
+msgid "总金额"
+msgstr "Importe total"
+
+msgid "您还没有设置店铺名称，"
+msgstr "Aún no has definido el nombre de tu tienda."
+
+#, python-format
+msgid "成功上传 %(v0)s 张图片给 %(v1)s"
+msgstr "Se han enviado %(v0)s imágenes a %(v1)s."
+
+msgid "我上传的图片"
+msgstr "Mis imágenes subidas"
+
+msgid "我的图片"
+msgstr "Mis imágenes"
+
+msgid "我的收藏"
+msgstr "Mis favoritos"
+
+msgid "我的订单"
+msgstr "Mis pedidos"
+
+msgid "所属一级类目"
+msgstr "Categoría principal"
+
+msgid "所选规格"
+msgstr "Variante seleccionada"
+
+msgid "所选规格不存在，请重新选择"
+msgstr "La variante seleccionada no existe. Elige otra."
+
+msgid "所选规格已售罄"
+msgstr "La variante seleccionada está agotada."
+
+msgid "所选规格暂不可购买，请选择其他组合"
+msgstr "Esta variante no está disponible. Elige otra combinación."
+
+msgid "手机号"
+msgstr "Teléfono móvil"
+
+msgid "批量设置价格"
+msgstr "Precio para todas las variantes"
+
+msgid "批量设置完成"
+msgstr "Cambios aplicados a todas las variantes."
+
+msgid "批量设置库存"
+msgstr "Existencias para todas las variantes"
+
+msgid "批量设置："
+msgstr "Actualización en lote: "
+
+msgid "按当前规格生成组合"
+msgstr "Generar combinaciones"
+
+msgid "排序"
+msgstr "Orden"
+
+msgid "接收商家"
+msgstr "Vendedor destinatario"
+
+msgid "控制台"
+msgstr "Panel de control"
+
+msgid "推荐"
+msgstr "Destacado"
+
+msgid "提交订单"
+msgstr "Enviar pedido"
+
+msgid "操作"
+msgstr "Acciones"
+
+msgid "支持 JPG、PNG 等图片格式，单次最多"
+msgstr "Se admiten JPG, PNG y otros formatos. Máximo por envío:"
+
+msgid "收到图片"
+msgstr "Imágenes recibidas"
+
+msgid "收藏"
+msgstr "Favoritos"
+
+msgid "收藏成功"
+msgstr "Añadido a favoritos."
+
+msgid "收藏时间"
+msgstr "Fecha de añadido"
+
+msgid "收藏统计"
+msgstr "Favoritos"
+
+msgid "收货信息"
+msgstr "Datos de envío"
+
+msgid "收货地址"
+msgstr "Dirección de envío"
+
+msgid "数量"
+msgstr "Cantidad"
+
+#, python-format
+msgid "新增 %(v0)s 个规格组合，移除 %(v1)s 个。请设置组合的价格和库存。"
+msgstr "Se han añadido %(v0)s combinaciones y eliminado %(v1)s. Configura sus precios y existencias."
+
+msgid "新增、删除或重命名规格维度会重新生成组合，请重新设置价格和库存。"
+msgstr "Si añades, eliminas o renombras atributos, se regenerarán las combinaciones y tendrás que configurar de nuevo sus precios y existencias."
+
+msgid "新增规格组合默认使用此价格"
+msgstr "Las nuevas variantes usarán este precio."
+
+msgid "暂无入驻商家"
+msgstr "Aún no hay tiendas."
+
+msgid "暂无商品"
+msgstr "Aún no hay productos."
+
+msgid "暂无子类目"
+msgstr "Aún no hay subcategorías."
+
+msgid "暂无收藏记录"
+msgstr "Aún no hay favoritos."
+
+msgid "暂无订单"
+msgstr "Aún no hay pedidos."
+
+msgid "更新时间"
+msgstr "Última actualización"
+
+msgid "最多只能添加"
+msgstr "Puedes añadir un máximo de"
+
+#, python-format
+msgid "最多可填写 %(v0)s 个规格维度"
+msgstr "Puedes añadir un máximo de %(v0)s atributos."
+
+msgid "未知的规格管理操作"
+msgstr "Operación de variantes desconocida."
+
+msgid "查看店铺"
+msgstr "Ver tienda"
+
+msgid "欢迎回来"
+msgstr "Bienvenido de nuevo"
+
+#, python-format
+msgid "欢迎回来，%(v0)s！"
+msgstr "¡Bienvenido de nuevo, %(v0)s!"
+
+msgid "欢迎，"
+msgstr "Hola, "
+
+msgid "注册"
+msgstr "Registrarse"
+
+msgid "注册商家账号"
+msgstr "Crear cuenta de vendedor"
+
+msgid "注册成功！"
+msgstr "¡Registro completado!"
+
+msgid "注册时间："
+msgstr "Fecha de registro: "
+
+msgid "添加"
+msgstr "Añadir"
+
+msgid "添加一级类目"
+msgstr "Añadir categoría principal"
+
+msgid "添加商品"
+msgstr "Añadir producto"
+
+msgid "添加型号"
+msgstr "Añadir modelo"
+
+msgid "添加子类目到"
+msgstr "Añadir subcategoría a "
+
+msgid "添加尺码"
+msgstr "Añadir talla"
+
+msgid "添加颜色"
+msgstr "Añadir color"
+
+msgid "点击这里设置"
+msgstr "Configúralo aquí"
+
+msgid "状态"
+msgstr "Estado"
+
+msgid "用户"
+msgstr "Usuario"
+
+msgid "用户上传给您的图片，包含用户名称和上传时间"
+msgstr "Imágenes enviadas por los usuarios, con su nombre y fecha de envío."
+
+msgid "用户名"
+msgstr "Nombre de usuario"
+
+msgid "用户名或密码错误"
+msgstr "El usuario o la contraseña son incorrectos."
+
+msgid "用户类型"
+msgstr "Tipo de usuario"
+
+msgid "留空不改"
+msgstr "Dejar vacío para conservar"
+
+msgid "登录"
+msgstr "Iniciar sesión"
+
+msgid "登录后购买"
+msgstr "Inicia sesión para comprar"
+
+msgid "确定删除此商品？"
+msgstr "¿Eliminar este producto?"
+
+msgid "确定删除此子类目？"
+msgstr "¿Eliminar esta subcategoría?"
+
+msgid "确定删除此类目及所有商品？"
+msgstr "¿Eliminar esta categoría y todos sus productos?"
+
+msgid "确定删除这张图片？"
+msgstr "¿Eliminar esta imagen?"
+
+msgid "确认密码"
+msgstr "Confirmar contraseña"
+
+msgid "确认订单"
+msgstr "Confirmar pedido"
+
+msgid "立即注册"
+msgstr "Registrarse"
+
+msgid "立即购买"
+msgstr "Comprar ahora"
+
+msgid "管理"
+msgstr "Gestionar"
+
+msgid "类目"
+msgstr "Categoría"
+
+#, python-format
+msgid "类目 \"%(v0)s\" 创建成功"
+msgstr "Se ha creado la categoría «%(v0)s»."
+
+msgid "类目名称"
+msgstr "Nombre de la categoría"
+
+msgid "类目已删除"
+msgstr "Categoría eliminada."
+
+msgid "类目管理"
+msgstr "Gestión de categorías"
+
+msgid "精选店铺"
+msgstr "Tiendas seleccionadas"
+
+msgid "给您的店铺起个名字"
+msgstr "Ponle un nombre a tu tienda"
+
+msgid "编辑"
+msgstr "Editar"
+
+msgid "编辑商品"
+msgstr "Editar producto"
+
+msgid "联系人"
+msgstr "Destinatario"
+
+msgid "联系电话"
+msgstr "Teléfono de contacto"
+
+msgid "自定义规格"
+msgstr "Añadir atributo personalizado"
+
+msgid "菜单"
+msgstr "Menú"
+
+msgid "被收藏数"
+msgstr "Veces en favoritos"
+
+#, python-format
+msgid "规格「%(v0)s」已下架"
+msgstr "La variante «%(v0)s» se ha retirado de la venta."
+
+#, python-format
+msgid "规格「%(v0)s」已售罄"
+msgstr "La variante «%(v0)s» está agotada."
+
+msgid "规格名称"
+msgstr "Nombre del atributo"
+
+#, python-format
+msgid "规格名称「%(v0)s」重复"
+msgstr "El atributo «%(v0)s» está repetido."
+
+msgid "规格名称须填写，且最多 50 个字符"
+msgstr "El nombre del atributo es obligatorio y admite hasta 50 caracteres."
+
+msgid "规格名，如 颜色"
+msgstr "Nombre del atributo, por ejemplo: Color"
+
+msgid "规格管理"
+msgstr "Gestión de variantes"
+
+msgid "规格组合"
+msgstr "Combinación de atributos"
+
+#, python-format
+msgid "规格组合不能超过 %(v0)s 个，请减少选项"
+msgstr "No puedes superar las %(v0)s combinaciones. Reduce las opciones."
+
+msgid "规格组合已更新，请重新填写"
+msgstr "Las variantes han cambiado. Vuelve a introducir los datos."
+
+msgid "规格组合文字太长，请缩短规格选项"
+msgstr "La combinación es demasiado larga. Acorta las opciones."
+
+msgid "规格维度"
+msgstr "Atributo"
+
+msgid "规格设置已保存"
+msgstr "Configuración de variantes guardada."
+
+msgid "规格选项"
+msgstr "Opciones del atributo"
+
+msgid "订单"
+msgstr "Pedido"
+
+msgid "订单号"
+msgstr "Número de pedido"
+
+msgid "订单总数"
+msgstr "Pedidos"
+
+msgid "订单状态已更新"
+msgstr "Estado del pedido actualizado."
+
+msgid "订单管理"
+msgstr "Gestión de pedidos"
+
+msgid "让每一位女性都能找到属于自己的美丽"
+msgstr "Encuentra la belleza de tu propio estilo"
+
+msgid "该商品已售罄"
+msgstr "Este producto está agotado."
+
+msgid "该商品未设置规格维度"
+msgstr "Este producto no tiene atributos."
+
+msgid "该商家账号已存在"
+msgstr "Esta cuenta de vendedor ya existe."
+
+msgid "该店铺暂无商品"
+msgstr "Esta tienda aún no tiene productos."
+
+msgid "该用户名已存在"
+msgstr "Este nombre de usuario ya existe."
+
+msgid "该用户名已存在，请换一个或直接登录"
+msgstr "Este usuario ya existe. Elige otro nombre o inicia sesión."
+
+msgid "该用户名已被注册，请换一个"
+msgstr "Este nombre de usuario ya está registrado. Elige otro."
+
+msgid "请先在商品编辑页添加规格维度（如颜色、尺码）"
+msgstr "Añade primero atributos, como color o talla, en la página de edición del producto."
+
+msgid "请先登录"
+msgstr "Inicia sesión para continuar."
+
+msgid "请先选择一级类目"
+msgstr "Selecciona primero una categoría principal"
+
+msgid "请再次输入密码"
+msgstr "Vuelve a introducir la contraseña"
+
+#, python-format
+msgid "请填写「%(v0)s」的规格选项"
+msgstr "Introduce las opciones de «%(v0)s»."
+
+msgid "请设置商家账号"
+msgstr "Elige un nombre de usuario de vendedor"
+
+msgid "请设置密码"
+msgstr "Crea una contraseña"
+
+msgid "请设置用户名"
+msgstr "Elige un nombre de usuario"
+
+msgid "请输入商家账号"
+msgstr "Introduce el usuario del vendedor"
+
+msgid "请输入密码"
+msgstr "Introduce la contraseña"
+
+msgid "请输入手机号（选填）"
+msgstr "Introduce tu teléfono móvil (opcional)"
+
+msgid "请输入用户名"
+msgstr "Introduce tu nombre de usuario"
+
+msgid "请输入用户名和密码"
+msgstr "Introduce el usuario y la contraseña."
+
+msgid "请输入联系电话"
+msgstr "Introduce un teléfono de contacto"
+
+msgid "请输入邮箱"
+msgstr "Introduce tu correo electrónico"
+
+msgid "请选择"
+msgstr "Selecciona "
+
+msgid "请选择一级类目"
+msgstr "Selecciona una categoría principal"
+
+msgid "请选择二级类目"
+msgstr "Selecciona una subcategoría"
+
+msgid "请选择商品规格"
+msgstr "Selecciona una variante del producto."
+
+msgid "请选择所属一级类目下的二级类目"
+msgstr "Selecciona una subcategoría de la categoría principal elegida."
+
+msgid "请选择要上传的图片"
+msgstr "Selecciona las imágenes que quieras subir."
+
+msgid "请选择规格"
+msgstr "Selecciona una variante"
+
+msgid "请选择规格查看库存"
+msgstr "Selecciona una variante para ver las existencias"
+
+msgid "购买"
+msgstr "Comprar"
+
+msgid "购买数量"
+msgstr "Cantidad"
+
+msgid "起"
+msgstr "en adelante"
+
+msgid "返回列表"
+msgstr "Volver a la lista"
+
+msgid "还没有上传过图片"
+msgstr "Aún no has subido imágenes."
+
+msgid "还没有商品，点击上方按钮添加"
+msgstr "Aún no hay productos. Añade uno con el botón de arriba."
+
+msgid "还没有收藏商品哦"
+msgstr "Aún no tienes productos favoritos."
+
+msgid "还没有用户上传图片"
+msgstr "Aún no has recibido imágenes."
+
+msgid "还没有类目，点击上方按钮添加"
+msgstr "Aún no hay categorías. Añade una con el botón de arriba."
+
+msgid "还没有规格组合"
+msgstr "Aún no hay combinaciones de atributos."
+
+msgid "还没有订单哦"
+msgstr "Aún no tienes pedidos."
+
+msgid "还没有账号？"
+msgstr "¿Aún no tienes cuenta?"
+
+msgid "退出"
+msgstr "Cerrar sesión"
+
+msgid "选择图片（可多选）"
+msgstr "Seleccionar imágenes (selección múltiple)"
+
+msgid "重新生成组合"
+msgstr "Regenerar combinaciones"
+
+msgid "需要商家权限"
+msgstr "Se requiere una cuenta de vendedor."
+
+msgid "顾客"
+msgstr "Cliente"
+
+msgid "预览店铺"
+msgstr "Vista previa de la tienda"
+
+msgid "颜色"
+msgstr "Color"
+
+msgid "首页"
+msgstr "Inicio"
+
+msgid "首页推荐"
+msgstr "Destacar en la tienda"
