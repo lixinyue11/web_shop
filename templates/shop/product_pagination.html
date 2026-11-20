@@ -1,0 +1,12 @@
+{% load i18n l10n %}
+{% if product_page.has_other_pages %}
+<div class="d-flex align-items-center gap-3 mt-4">
+    {% if product_page.has_previous %}
+    <a class="btn btn-outline-pink" href="?{{ page_params }}&amp;page={{ product_page.previous_page_number|unlocalize }}">{% translate 'Previous' %}</a>
+    {% endif %}
+    <span>{{ product_page.number }} / {{ product_page.paginator.num_pages }}</span>
+    {% if product_page.has_next %}
+    <a class="btn btn-outline-pink" href="?{{ page_params }}&amp;page={{ product_page.next_page_number|unlocalize }}">{% translate 'Next' %}</a>
+    {% endif %}
+</div>
+{% endif %}

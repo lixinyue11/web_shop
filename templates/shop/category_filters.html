@@ -1,0 +1,19 @@
+{% load i18n l10n %}
+<nav class="sidebar" aria-label="{% translate '商品分类' %}">
+    <h5 class="mb-3">{% translate '商品分类' %}</h5>
+    <a class="nav-link {% if not category_filters %}active{% endif %}" href="{{ browse_url }}?{{ search_params }}">
+        {% translate '全部商品' %}
+    </a>
+    {% for category in categories %}
+        <a class="nav-link {% if category_filters.category_id == category.pk %}active{% endif %}"
+           href="{{ browse_url }}?{{ search_params }}&amp;category={{ category.pk|unlocalize }}">{{ category.name }}</a>
+        {% for subcategory in category.subcategories.all %}
+            <a class="nav-link ms-3 {% if category_filters.subcategory_id == subcategory.pk %}active{% endif %}"
+               href="{{ browse_url }}?{{ search_params }}&amp;category={{ category.pk|unlocalize }}&amp;subcategory={{ subcategory.pk|unlocalize }}">{{ subcategory.name }}</a>
+            {% for third in subcategory.third_categories.all %}
+                <a class="nav-link ms-4 {% if category_filters.third_category_id == third.pk %}active{% endif %}"
+                   href="{{ browse_url }}?{{ search_params }}&amp;category={{ category.pk|unlocalize }}&amp;subcategory={{ subcategory.pk|unlocalize }}&amp;third_category={{ third.pk|unlocalize }}">{{ third.name }}</a>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+</nav>

@@ -1,0 +1,15 @@
+{% load i18n l10n %}
+<form action="{{ browse_url }}" method="get" role="search" class="d-flex flex-wrap gap-2 mb-4">
+    {% for key, value in category_filters.items %}
+        {% if key == 'category_id' %}<input type="hidden" name="category" value="{{ value|unlocalize }}">{% endif %}
+        {% if key == 'subcategory_id' %}<input type="hidden" name="subcategory" value="{{ value|unlocalize }}">{% endif %}
+        {% if key == 'third_category_id' %}<input type="hidden" name="third_category" value="{{ value|unlocalize }}">{% endif %}
+    {% endfor %}
+    <input type="search" class="form-control flex-grow-1 w-auto" name="q" value="{{ search_query }}" maxlength="200"
+           aria-label="{% translate 'Search products' %}" placeholder="{% translate 'Search products' %}">
+    <select class="form-select w-auto" name="match" aria-label="{% translate 'Search mode' %}">
+        <option value="fuzzy">{% translate 'Keyword search' %}</option>
+        <option value="exact" {% if exact_search %}selected{% endif %}>{% translate 'Exact product name' %}</option>
+    </select>
+    <button class="btn btn-pink" type="submit">{% translate 'Search' %}</button>
+</form>
