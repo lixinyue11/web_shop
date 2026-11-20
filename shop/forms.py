@@ -8,12 +8,13 @@ from .models import Order, Product, ProductSKU
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'category', 'subcategory', 'price', 'original_price', 'stock',
+        fields = ['name', 'category', 'subcategory', 'third_category', 'price', 'original_price', 'stock',
                   'description', 'is_active', 'is_featured']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-select', 'id': 'categorySelect'}),
             'subcategory': forms.Select(attrs={'class': 'form-select', 'id': 'subcategorySelect'}),
+            'third_category': forms.Select(attrs={'class': 'form-select', 'id': 'thirdCategorySelect'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
             'original_price': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
             'stock': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
@@ -36,6 +37,11 @@ class ProductForm(forms.ModelForm):
         except forms.ValidationError:
             category_id = None
         self.fields['subcategory'].queryset = self.fields['subcategory'].queryset.filter(category=category_id)
+        try:
+            subcategory = self.fields['subcategory'].to_python(self['subcategory'].value())
+        except forms.ValidationError:
+            subcategory = None
+        self.fields['third_category'].queryset = self.fields['third_category'].queryset.filter(subcategory=subcategory)
 
     def clean(self):
         cleaned = super().clean()

@@ -49,6 +49,9 @@
                     </a>
                     <span class="category-badge">{{ product.category.name }}</span>
                     <span class="category-badge">{{ product.subcategory.name }}</span>
+                    {% if product.third_category_id %}
+                    <span class="category-badge">{{ product.third_category.name }}</span>
+                    {% endif %}
                 </div>
                 <div class="mb-4">
                     <span class="product-price fs-2" id="productPrice">¥{{ product.display_price }}{% if specs %} {% translate '起' %}{% endif %}</span>

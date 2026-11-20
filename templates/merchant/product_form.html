@@ -24,6 +24,10 @@
                 <label for="{{ form.subcategory.id_for_label }}" class="form-label">{% translate '二级类目 *' %}</label>
                 {{ form.subcategory }}
             </div>
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.third_category.id_for_label }}" class="form-label">{% translate 'Third-level category (optional)' %}</label>
+                {{ form.third_category }}
+            </div>
         </div>
 
         <div class="mb-3">
@@ -152,9 +156,29 @@
 
 {% block extra_js %}
 <script>
+const subcategorySelect = document.getElementById('subcategorySelect');
+const thirdCategorySelect = document.getElementById('thirdCategorySelect');
+
+subcategorySelect.addEventListener('change', async function() {
+    const subcategoryId = this.value;
+    thirdCategorySelect.replaceChildren(new Option('---------', ''));
+    if (!subcategoryId) return;
+    try {
+        const response = await fetch('/api/third-categories/' + encodeURIComponent(subcategoryId) + '/');
+        if (!response.ok) throw new Error(response.status);
+        const data = await response.json();
+        if (this.value !== subcategoryId) return;
+        data.categories.forEach(category => thirdCategorySelect.add(new Option(category.name, category.id)));
+    } catch (error) {
+        if (this.value === subcategoryId) alert('{{ _("Unable to load categories. Try again.")|escapejs }}');
+    }
+});
+
 document.getElementById('categorySelect').addEventListener('change', function() {
     const categoryId = this.value;
     const subSelect = document.getElementById('subcategorySelect');
+    subSelect.replaceChildren(new Option('{{ _("请选择二级类目")|escapejs }}', ''));
+    subSelect.dispatchEvent(new Event('change'));
 
     if (!categoryId) {
         subSelect.replaceChildren(new Option('{{ _('请先选择一级类目')|escapejs }}', ''));

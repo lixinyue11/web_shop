@@ -13,7 +13,7 @@
 {% if categories %}
 <div class="row g-4">
     {% for cat in categories %}
-    <div class="col-md-6">
+    <div class="col-xl-6">
         <div class="card p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="mb-0" style="color: var(--pink-dark);">
@@ -31,17 +31,54 @@
                     </form>
                 </div>
             </div>
+            <form method="post" class="input-group input-group-sm mb-3">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="rename_category">
+                <input type="hidden" name="category_id" value="{{ cat.pk }}">
+                <input class="form-control" name="name" value="{{ cat.name }}" maxlength="100" required
+                       aria-label="{% translate '一级类目' %}">
+                <button class="btn btn-outline-pink">{% translate 'Rename' %}</button>
+            </form>
             {% if cat.subcategories.exists %}
             <ul class="list-group list-group-flush">
                 {% for sub in cat.subcategories.all %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-tag me-2" style="color: var(--pink-soft);"></i>{{ sub.name }}</span>
+                <li class="list-group-item">
+                    <div class="d-flex gap-2 align-items-center mb-2">
+                    <form method="post" class="input-group input-group-sm">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="rename_subcategory">
+                        <input type="hidden" name="subcategory_id" value="{{ sub.pk }}">
+                        <input class="form-control" name="name" value="{{ sub.name }}" maxlength="100" required
+                               aria-label="{% translate '二级类目' %}">
+                        <button class="btn btn-outline-pink">{% translate 'Rename' %}</button>
+                    </form>
                     <form method="post" class="d-inline" onsubmit="return confirm('{% translate '确定删除此子类目？' %}')">
                         {% csrf_token %}
                         <input type="hidden" name="action" value="delete_subcategory">
                         <input type="hidden" name="subcategory_id" value="{{ sub.id }}">
                         <button type="submit" class="btn btn-sm btn-link text-danger p-0"><i class="bi bi-x"></i></button>
                     </form>
+                    </div>
+                    <div class="ps-3">
+                        <form method="post" class="input-group input-group-sm mb-2">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="add_third_category">
+                            <input type="hidden" name="subcategory_id" value="{{ sub.pk }}">
+                            <input class="form-control" name="name" maxlength="100" required
+                                   placeholder="{% translate 'Third-level category' %}" aria-label="{% translate 'Third-level category' %}">
+                            <button class="btn btn-outline-pink">{% translate '添加' %}</button>
+                        </form>
+                        {% for third in sub.third_categories.all %}
+                        <form method="post" class="d-flex align-items-center gap-2 mb-1"
+                              onsubmit="return confirm('{% translate 'Delete this third-level category?' %}')">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete_third_category">
+                            <input type="hidden" name="third_category_id" value="{{ third.pk }}">
+                            <span>{{ third.name }}</span>
+                            <button class="btn btn-sm btn-link text-danger">{% translate '删除' %}</button>
+                        </form>
+                        {% endfor %}
+                    </div>
                 </li>
                 {% endfor %}
             </ul>

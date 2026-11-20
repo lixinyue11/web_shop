@@ -2,14 +2,17 @@
 from django.utils.translation import gettext as _
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db import OperationalError, transaction
+from django.core.paginator import Paginator
+from django.db import IntegrityError, OperationalError, transaction
+from django.db.models import Prefetch, Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.urls import reverse
 from functools import wraps
 from .models import (
-    Category, SubCategory, Product, ProductImage, ProductSKU,
+    Category, SubCategory, ThirdCategory, Product, ProductImage, ProductSKU,
     Favorite, Order, ImageCollection,
 )
 from .forms import OrderForm, ProductForm, SKUValuesForm
@@ -49,23 +52,76 @@ def home(request):
 def shop_detail(request, merchant_id):
     """商家店铺页面"""
     merchant = get_object_or_404(User, id=merchant_id, user_type='merchant')
-    categories = Category.objects.filter(products__merchant=merchant).distinct()
-    products = (Product.objects.filter(merchant=merchant, is_active=True)
-                .prefetch_related('images', 'specs', 'skus'))
-
-    category_id = request.GET.get('category')
-    if category_id:
-        products = products.filter(category_id=category_id)
-
-    featured = products.filter(is_featured=True)[:4]
-
+    products = Product.objects.filter(merchant=merchant, is_active=True)
+    context = product_browse_context(request, products, 'shop_detail', [merchant.pk])
+    featured = []
+    if not (context['search_query'] or context['category_filters'] or request.GET.get('page')):
+        featured = product_cards(products.filter(is_featured=True))[:4]
     return render(request, 'shop/shop_detail.html', {
+        **context,
         'merchant': merchant,
-        'categories': categories,
-        'products': products,
         'featured_products': featured,
-        'current_category': int(category_id) if category_id else None,
     })
+
+
+def product_search(request):
+    products = Product.objects.filter(is_active=True)
+    return render(request, 'shop/product_list.html', product_browse_context(request, products, 'product_search'))
+
+
+def product_cards(products):
+    return products.select_related('category', 'subcategory', 'third_category').prefetch_related('images', 'specs', 'skus')
+
+
+def category_id(value):
+    if value.isascii() and value.isdecimal() and len(value) <= 18:
+        return int(value)
+    return None
+
+
+def product_browse_context(request, products, route, args=()):
+    query = request.GET.get('q', '').strip()[:200]
+    exact = request.GET.get('match') == 'exact'
+    filters = {}
+    for param in ('category', 'subcategory', 'third_category'):
+        selected = category_id(request.GET.get(param, ''))
+        if selected:
+            filters[param + '_id'] = selected
+
+    categories = Category.objects.filter(pk__in=products.order_by().values('category_id')).prefetch_related(
+        Prefetch('subcategories', queryset=SubCategory.objects.filter(
+            pk__in=products.order_by().values('subcategory_id')
+        ).prefetch_related(Prefetch('third_categories', queryset=ThirdCategory.objects.filter(
+            pk__in=products.order_by().values('third_category_id')
+        ))))
+    )
+    results = products.filter(**filters)
+    if query and exact:
+        results = results.filter(name__iexact=query)
+    elif query:
+        for term in query.split()[:10]:
+            results = results.filter(
+                Q(name__icontains=term) | Q(description__icontains=term) |
+                Q(category__name__icontains=term) | Q(subcategory__name__icontains=term) |
+                Q(third_category__name__icontains=term)
+            )
+
+    page = Paginator(product_cards(results.order_by('-created_at', '-pk')), 24).get_page(request.GET.get('page'))
+    search_params = request.GET.copy()
+    search_params.clear()
+    if query:
+        search_params['q'] = query
+    if exact:
+        search_params['match'] = 'exact'
+    page_params = search_params.copy()
+    for field, value in filters.items():
+        page_params[field[:-3]] = value
+    return {
+        'products': page.object_list, 'product_page': page, 'categories': categories,
+        'browse_url': reverse(route, args=args), 'search_query': query, 'exact_search': exact,
+        'category_filters': filters, 'search_params': search_params.urlencode(),
+        'page_params': page_params.urlencode(),
+    }
 
 
 def product_detail(request, product_id):
@@ -211,46 +267,65 @@ def merchant_categories(request):
     """类目管理"""
     if request.method == 'POST':
         action = request.POST.get('action')
+        cat_id = category_id(request.POST.get('category_id', ''))
+        sub_id = category_id(request.POST.get('subcategory_id', ''))
 
-        if action == 'add_category':
+        if action in ('rename_category', 'rename_subcategory', 'add_third_category'):
             name = request.POST.get('name', '').strip()
-            if name:
+            if not name or len(name) > 100:
+                messages.error(request, _('Enter a category name of up to 100 characters.'))
+                return redirect('merchant_categories')
+            try:
+                with transaction.atomic():
+                    if action == 'add_third_category':
+                        parent = get_object_or_404(SubCategory, pk=sub_id)
+                        ThirdCategory.objects.create(subcategory=parent, name=name)
+                    else:
+                        model, pk = (Category, cat_id) if action == 'rename_category' else (SubCategory, sub_id)
+                        category = get_object_or_404(model, pk=pk)
+                        category.name = name
+                        category.save(update_fields=['name'])
+            except IntegrityError:
+                messages.error(request, _('A category with this name already exists at this level.'))
+            else:
+                messages.success(request, _('Category saved.'))
+
+        elif action == 'delete_third_category':
+            ThirdCategory.objects.filter(pk=category_id(request.POST.get('third_category_id', ''))).delete()
+            messages.success(request, _('类目已删除'))
+
+        elif action == 'add_category':
+            name = request.POST.get('name', '').strip()
+            if 0 < len(name) <= 100:
                 Category.objects.get_or_create(name=name)
                 messages.success(request, _('类目 "%(v0)s" 创建成功') % {'v0': name})
 
         elif action == 'delete_category':
-            cat_id = request.POST.get('category_id')
             Category.objects.filter(id=cat_id).delete()
             messages.success(request, _('类目已删除'))
 
         elif action == 'add_subcategory':
-            cat_id = request.POST.get('category_id')
             subname = request.POST.get('subname', '').strip()
-            if cat_id and subname:
+            if cat_id and 0 < len(subname) <= 100:
                 category = get_object_or_404(Category, id=cat_id)
                 SubCategory.objects.get_or_create(category=category, name=subname)
                 messages.success(request, _('二级类目 "%(v0)s" 创建成功') % {'v0': subname})
 
         elif action == 'delete_subcategory':
-            sub_id = request.POST.get('subcategory_id')
             SubCategory.objects.filter(id=sub_id).delete()
             messages.success(request, _('二级类目已删除'))
 
         return redirect('merchant_categories')
 
-    categories = Category.objects.prefetch_related('subcategories').all()
+    categories = Category.objects.prefetch_related('subcategories__third_categories').all()
     return render(request, 'merchant/categories.html', {'categories': categories})
 
 
 @merchant_required
 def merchant_products(request):
     """商品管理 - 只显示自己的商品"""
-    products = (Product.objects.filter(merchant=request.user)
-                .select_related('category', 'subcategory')
-                .prefetch_related('images', 'specs', 'skus'))
-    return render(request, 'merchant/products.html', {
-        'products': products,
-    })
+    products = Product.objects.filter(merchant=request.user)
+    return render(request, 'merchant/products.html', product_browse_context(request, products, 'merchant_products'))
 
 
 @merchant_required
@@ -420,6 +495,11 @@ def get_subcategories_api(request, category_id):
     """获取二级类目API"""
     subcategories = SubCategory.objects.filter(category_id=category_id).values('id', 'name')
     return JsonResponse({'subcategories': list(subcategories)})
+
+
+def get_third_categories_api(request, subcategory_id):
+    categories = ThirdCategory.objects.filter(subcategory_id=subcategory_id).values('id', 'name')
+    return JsonResponse({'categories': list(categories)})
 
 
 # ============ 图片收集功能 ============

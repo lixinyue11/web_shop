@@ -930,3 +930,48 @@ msgstr "Inicio"
 
 msgid "首页推荐"
 msgstr "Destacar en la tienda"
+
+msgid "Search products"
+msgstr "Buscar productos"
+
+msgid "Search mode"
+msgstr "Modo de búsqueda"
+
+msgid "Keyword search"
+msgstr "Por palabras clave"
+
+msgid "Exact product name"
+msgstr "Nombre exacto del producto"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "Previous"
+msgstr "Anterior"
+
+msgid "Next"
+msgstr "Siguiente"
+
+msgid "Rename"
+msgstr "Renombrar"
+
+msgid "Third-level category"
+msgstr "Categoría de tercer nivel"
+
+msgid "Third-level category (optional)"
+msgstr "Categoría de tercer nivel (opcional)"
+
+msgid "Delete this third-level category?"
+msgstr "¿Eliminar esta categoría de tercer nivel?"
+
+msgid "Unable to load categories. Try again."
+msgstr "No se han podido cargar las categorías. Inténtalo de nuevo."
+
+msgid "Enter a category name of up to 100 characters."
+msgstr "Escribe un nombre de categoría de hasta 100 caracteres."
+
+msgid "A category with this name already exists at this level."
+msgstr "Ya existe una categoría con ese nombre en este nivel."
+
+msgid "Category saved."
+msgstr "Categoría guardada."

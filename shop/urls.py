@@ -4,6 +4,7 @@ from . import views
 urlpatterns = [
     # 前台
     path('', views.home, name='home'),
+    path('products/search/', views.product_search, name='product_search'),
     path('shop/<int:merchant_id>/', views.shop_detail, name='shop_detail'),
     path('product/<int:product_id>/', views.product_detail, name='product_detail'),
     path('favorite/<int:product_id>/', views.toggle_favorite, name='toggle_favorite'),
@@ -30,5 +31,6 @@ urlpatterns = [
     path('merchant/collection/delete/<int:collection_id>/', views.merchant_delete_collection, name='merchant_delete_collection'),
 
     # API
+    path('api/third-categories/<int:subcategory_id>/', views.get_third_categories_api, name='get_third_categories'),
     path('api/subcategories/<int:category_id>/', views.get_subcategories_api, name='get_subcategories'),
 ]

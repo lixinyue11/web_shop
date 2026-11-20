@@ -930,3 +930,48 @@ msgstr "首页"
 
 msgid "首页推荐"
 msgstr "首页推荐"
+
+msgid "Search products"
+msgstr "搜索商品"
+
+msgid "Search mode"
+msgstr "搜索方式"
+
+msgid "Keyword search"
+msgstr "关键词搜索"
+
+msgid "Exact product name"
+msgstr "按完整商品名搜索"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "Previous"
+msgstr "上一页"
+
+msgid "Next"
+msgstr "下一页"
+
+msgid "Rename"
+msgstr "改名"
+
+msgid "Third-level category"
+msgstr "三级类目"
+
+msgid "Third-level category (optional)"
+msgstr "三级类目（选填）"
+
+msgid "Delete this third-level category?"
+msgstr "确定删除此三级类目？"
+
+msgid "Unable to load categories. Try again."
+msgstr "加载类目失败，请重试。"
+
+msgid "Enter a category name of up to 100 characters."
+msgstr "请输入不超过 100 个字符的类目名称。"
+
+msgid "A category with this name already exists at this level."
+msgstr "同一级下已有这个类目名称。"
+
+msgid "Category saved."
+msgstr "类目已保存。"

@@ -146,6 +146,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">{% translate '首页' %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'product_search' %}">{% translate 'Search products' %}</a></li>
                 </ul>
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}

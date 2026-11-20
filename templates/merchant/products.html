@@ -10,6 +10,12 @@
     </a>
 </div>
 
+<div class="row">
+    <div class="col-lg-3 mb-3">
+        {% include 'shop/category_filters.html' %}
+    </div>
+    <div class="col-lg-9">
+        {% include 'shop/search_form.html' %}
 {% if products %}
 <div class="card">
     <div class="table-responsive">
@@ -47,7 +53,7 @@
                         </small>
                         {% endif %}
                     </td>
-                    <td><small>{{ product.category.name }} / {{ product.subcategory.name }}</small></td>
+                    <td><small>{{ product.category.name }} / {{ product.subcategory.name }}{% if product.third_category_id %} / {{ product.third_category.name }}{% endif %}</small></td>
                     <td class="product-price">
                         ¥{{ product.display_price }}
                         {% if product.has_specs %}<small class="text-muted d-block" style="font-size:.75rem;">{% translate '起' %}</small>{% endif %}
@@ -85,7 +91,10 @@
 {% else %}
 <div class="text-center py-5">
     <i class="bi bi-bag-plus display-1" style="color: var(--pink-soft);"></i>
-    <p class="mt-3 text-muted">{% translate '还没有商品，点击上方按钮添加' %}</p>
+    <p class="mt-3 text-muted">{% if search_query or category_filters %}{% translate '暂无商品' %}{% else %}{% translate '还没有商品，点击上方按钮添加' %}{% endif %}</p>
 </div>
 {% endif %}
+        {% include 'shop/product_pagination.html' %}
+    </div>
+</div>
 {% endblock %}
